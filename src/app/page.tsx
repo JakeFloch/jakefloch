@@ -278,7 +278,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className="self-center"
+              className="self-start"
               initial="hidden"
               whileInView="visible"
               variants={fadeUp}
@@ -286,55 +286,61 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.15 }}
             >
               <div className="mt-0">
-                <h3 className="text-md font-semibold tracking-[0.15em] text-zinc-400 uppercase mb-4">
-                  Education & Experience
-                </h3>
-                <ul className="space-y-4 text-md">
-                  <li className="flex items-start gap-3">
-                    {/* small gradient dot used as bullet point */}
-                    <span
-                      className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <p className="text-zinc-200">
-                        B.S. Computer Science · Emory University
-                      </p>
-                      <p className="text-xs text-zinc-500/90">
-                        August 2023– May 2027
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span
-                      className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <p className="text-zinc-200">
-                        Research Assistant / Developer · Nell Hodgson Woodruff
-                        (Emory)
-                      </p>
-                      <p className="text-xs text-zinc-500/90">
-                        July 2025 – Present
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span
-                      className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <p className="text-zinc-200">
-                        App Development Intern · Youphoria
-                      </p>
-                      <p className="text-xs text-zinc-500/90">
-                        May – August 2025
-                      </p>
-                    </div>
-                  </li>
-                </ul>
+                <motion.div
+                  className="mt-0"
+                  variants={fadeIn}
+                  transition={{ delay: 0.25 }}
+                >
+                  <h3 className="text-md font-semibold tracking-[0.15em] text-zinc-400 uppercase mb-4">
+                    Education & Experience
+                  </h3>
+                  <ul className="space-y-4 text-md">
+                    <li className="flex items-start gap-3">
+                      {/* small gradient dot used as bullet point */}
+                      <span
+                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <p className="text-zinc-200">
+                          B.S. Computer Science · Emory University
+                        </p>
+                        <p className="text-xs text-zinc-500/90">
+                          August 2023– May 2027
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span
+                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <p className="text-zinc-200">
+                          Research Assistant / Developer · Nell Hodgson Woodruff
+                          (Emory)
+                        </p>
+                        <p className="text-xs text-zinc-500/90">
+                          July 2025 – Present
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span
+                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <p className="text-zinc-200">
+                          App Development Intern · Youphoria
+                        </p>
+                        <p className="text-xs text-zinc-500/90">
+                          May – August 2025
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </motion.div>
               </div>
             </motion.div>
           </div>
