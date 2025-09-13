@@ -4,6 +4,7 @@ import "./globals.css";
 import GlobalGridCursorOverlay from "../components/GlobalGridCursorOverlay";
 import CustomCursor from "../components/CustomCursor";
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,6 +66,7 @@ export default function RootLayout({
         <CustomCursor />
         <div className="relative z-20">{children}</div>
         <Analytics /> {/* Vercel Web Analytics */}
+        <SpeedInsights /> {/* Vercel Speed Insights */}
       </body>
     </html>
   );
