@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import Image from "next/image";
 
 // Reusable variants for motion 
 const fadeUp = {
@@ -360,8 +361,8 @@ export default function Home() {
                 description:
                   "Two dimensional top-down casino themed arcade shooter game where the player navigates through various levels filled with enemies and obstacles. The player can buy upgrades and wager their character's and their enemies' attributes for money.",
                 tech: ["Unity", "C#", "Unity Scripting API"],
-                gradient: "from-blue-500 to-blue-700",
-                emoji: "📋",
+                gradient: "from-cyan-300 to-slate-900",
+                logo: "/unity-69-logo-png-transparent.png",
                 links: {
                   demo: "https://miguelchaveznava.itch.io/raging-gambler",
                   github: "https://github.com/JMBreard/CS370-Raging-Gambler",
@@ -380,8 +381,8 @@ export default function Home() {
                   "Socket.io",
                   "Shadcn UI",
                 ],
-                gradient: "from-cyan-500 to-blue-600",
-                emoji: "🌤️",
+                gradient: "from-gray-500 to-fuchsia-100",
+                logo: "/invitide_logo.png",
                 links: {
                   demo: "https://invitide.vercel.app/",
                   github: "https://github.com/alexlautin/invitide",
@@ -399,8 +400,8 @@ export default function Home() {
                   "Tailwind",
                   "Shadcn UI",
                 ],
-                gradient: "from-orange-500 to-red-600",
-                emoji: "🍳",
+                gradient: "from-slate-50 to-gray-100",
+                logo: "/galleryboardlogo.png",
                 links: {
                   demo: "https://galleryboard.vercel.app/",
                   github: "https://github.com/alexlautin/galleryboard",
@@ -421,10 +422,21 @@ export default function Home() {
                   className="p-8 transition-all duration-500 h-full hover:shadow-purple-500/10 flex flex-col"
                 >
                   <motion.div
-                    className={`w-full h-48 rounded-xl mb-6 flex items-center justify-center text-4xl group-hover:scale-105 transition-transform duration-300 bg-gradient-to-br ${project.gradient} shadow-inner`}
+                    className={`relative w-full h-48 rounded-xl mb-6 flex items-center justify-center text-4xl group-hover:scale-105 transition-transform duration-300 bg-gradient-to-br ${project.gradient} shadow-inner overflow-hidden`}
                     layout
                   >
-                    {project.emoji}
+                    <Image
+                      src={project.logo}
+                      alt={`${project.title} logo`}
+                      fill
+                      className={`object-contain ${
+                        project.title === "GalleryBoard"
+                          ? "scale-130 p-3"
+                          : "p-6"
+                      }`}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={index < 2}
+                    />
                   </motion.div>
                   <h3 className="text-lg font-semibold mb-3 text-zinc-100 tracking-tight card-title-minh">
                     {project.title}
