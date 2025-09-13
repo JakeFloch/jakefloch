@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import GlobalGridCursorOverlay from "../components/GlobalGridCursorOverlay";
 import CustomCursor from "../components/CustomCursor";
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,6 +64,7 @@ export default function RootLayout({
         {/* Custom pointer (hidden unless over interactive elements) */}
         <CustomCursor />
         <div className="relative z-20">{children}</div>
+        <Analytics /> {/* Vercel Web Analytics */}
       </body>
     </html>
   );
