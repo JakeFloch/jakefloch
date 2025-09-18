@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { GitHubLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 
-// Reusable variants for motion 
+// Reusable variants for motion
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0 },
@@ -495,7 +495,7 @@ export default function Home() {
               className="space-y-6"
             >
               <div>
-        {/* data-brand-focus enables the gradient focus ring in CSS */}
+                {/* data-brand-focus enables the gradient focus ring in CSS */}
                 <Input
                   type="text"
                   name="name"

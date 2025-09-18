@@ -17,12 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jake Floch - Full Stack Developer & Creative Technologist",
+  title: "Jake Floch - Software Engineer",
   description:
-    "Portfolio of Jake Floch - Full Stack Developer specializing in modern web technologies, creative design, and innovative digital experiences. Explore my projects and get in touch for collaborations.",
+    "Portfolio of Jake Floch - Software Engineer specializing in modern web technologies, creative design, and innovative digital experiences. Explore my projects and get in touch for collaborations.",
   keywords: [
     "Jake Floch",
-    "Full Stack Developer",
+    "Software Engineer",
     "Web Developer",
     "React",
     "Next.js",
@@ -33,17 +33,17 @@ export const metadata: Metadata = {
   viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
   openGraph: {
-    title: "Jake Floch - Full Stack Developer",
+    title: "Jake Floch - Software Engineer",
     description:
-      "Portfolio showcasing modern web development and creative digital experiences",
+      "Jake Floch's portfolio showcasing modern web development",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jake Floch - Full Stack Developer",
+    title: "Jake Floch - Software Engineer",
     description:
-      "Portfolio showcasing modern web development and creative digital experiences",
+      "Jake Floch's portfolio showcasing modern web development",
   },
 };
 
