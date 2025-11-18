@@ -357,6 +357,24 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
+                title: "Cornucopia",
+                description:
+                  "A mobile app that aggregates nearby food options and highlights key data, such as distance, affordability, and SNAP/EBT eligibility using OpenStreetMap and USDA’s SNAP retailer location data",
+                tech: [
+                  "Expo",
+                  "React Native",
+                  "Supabase",
+                  "PostgreSQL",
+                  "TypeScript",
+                  "Git",
+                ],
+                gradient: "from-orange-300 to-slate-700",
+                logo: "/cornucopia.png",
+                links: {
+                  github: "https://github.com/alexlautin/cornucopia",
+                },
+              },
+              {
                 title: "Unity Game - Top-Down Shooter",
                 description:
                   "Two dimensional top-down casino themed arcade shooter game where the player navigates through various levels filled with enemies and obstacles. The player can buy upgrades and wager their character's and their enemies' attributes for money.",
@@ -377,6 +395,7 @@ export default function Home() {
                   "TypeScript",
                   "React",
                   "Supabase",
+                  "PostgreSQL",
                   "Tailwind",
                   "Socket.io",
                   "Shadcn UI",
@@ -397,6 +416,7 @@ export default function Home() {
                   "TypeScript",
                   "React",
                   "Supabase",
+                  "PostgreSQL",
                   "Tailwind",
                   "Shadcn UI",
                 ],
