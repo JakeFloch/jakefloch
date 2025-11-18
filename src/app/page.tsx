@@ -371,6 +371,7 @@ export default function Home() {
                 gradient: "from-orange-300 to-slate-700",
                 logo: "/cornucopia.png",
                 links: {
+                  demo: "https://devpost.com/software/cornucopia-9gpkcw?ref_content=my-projects-tab&ref_feature=my_projects",
                   github: "https://github.com/alexlautin/cornucopia",
                 },
               },
