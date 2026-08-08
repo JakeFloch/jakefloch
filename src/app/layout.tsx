@@ -19,11 +19,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Jake Floch - Software Engineer",
   description:
-    "Portfolio of Jake Floch - Software Engineer specializing in modern web technologies, creative design, and innovative digital experiences. Explore my projects and get in touch for collaborations.",
+    "Portfolio of Jake Floch — Computer Science student at Emory and Data Engineer Intern at Expedia Group. Data pipelines, backend, and full-stack projects.",
   keywords: [
     "Jake Floch",
     "Software Engineer",
-    "Web Developer",
+    "Data Engineer",
+    "Python",
+    "SQL",
+    "Trino",
+    "Spark",
     "React",
     "Next.js",
     "TypeScript",

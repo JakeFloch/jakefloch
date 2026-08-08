@@ -118,7 +118,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.8 }}
             >
-              Aspiring Software Engineer
+              Software Engineer
               <motion.span
                 className="ml-2 caret-blink text-purple-400"
                 aria-hidden="true"
@@ -187,22 +187,23 @@ export default function Home() {
                 variants={fadeUp}
                 transition={{ delay: 0.05 }}
               >
-                I&apos;m an aspiring software engineer with several years of
-                programming experience. I started programming in high school and
-                have continued studying Computer Science at Emory. I enjoy the
-                problem-solving aspect of development and the satisfaction of
-                building something that people actually use.
+                I&apos;m a Computer Science student at Emory University with an
+                AI concentration and a Business minor, graduating May 2027. I
+                like the problem-solving side of engineering and the part where
+                something I built actually gets used.
               </motion.p>
               <motion.p
                 className="text-lg leading-relaxed text-zinc-300/90"
                 variants={fadeUp}
                 transition={{ delay: 0.15 }}
               >
-                Currently, I am working as Research Assistant for a lab in the
-                Nell Hodgson Woodruff School of Nursing at Emory University. I
-                am working with OpenCv and Python to develop and maintain data
-                processing pipelines that use thermal imaging data to detect and
-                classify pressure injuries.
+                I&apos;m currently a Data Engineer Intern on Expedia Group&apos;s
+                Global Payments team, working on data quality and pipeline
+                testing for payment data products. Before that I spent ten
+                months as a research assistant at Emory&apos;s School of
+                Nursing, building Python and OpenCV pipelines that processed
+                thermal and tissue-oximetry imaging into training-ready datasets
+                for the lab&apos;s CNN models.
               </motion.p>
               <motion.div
                 className="mt-10"
@@ -304,39 +305,53 @@ export default function Home() {
                       />
                       <div>
                         <p className="text-zinc-200">
+                          Data Engineer Intern · Expedia Group (Global Payments)
+                        </p>
+                        <p className="text-xs text-zinc-500/90">
+                          June 2026 – August 2026
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span
+                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <p className="text-zinc-200">
+                          Research Assistant / Developer · Emory University
+                          School of Nursing
+                        </p>
+                        <p className="text-xs text-zinc-500/90">
+                          July 2025 – May 2026
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span
+                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <p className="text-zinc-200">
+                          Software Engineering Intern · Youphoria
+                        </p>
+                        <p className="text-xs text-zinc-500/90">
+                          May 2025 – August 2025
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span
+                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
+                        aria-hidden="true"
+                      />
+                      <div>
+                        <p className="text-zinc-200">
                           B.S. Computer Science · Emory University
                         </p>
                         <p className="text-xs text-zinc-500/90">
-                          August 2023– May 2027
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span
-                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <p className="text-zinc-200">
-                          Research Assistant / Developer · Nell Hodgson Woodruff
-                          (Emory)
-                        </p>
-                        <p className="text-xs text-zinc-500/90">
-                          July 2025 – Present
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span
-                        className="mt-1.5 h-2 w-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-400 shadow-[0_0_0_3px_rgba(124,58,237,0.15)]"
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <p className="text-zinc-200">
-                          App Development Intern · Youphoria
-                        </p>
-                        <p className="text-xs text-zinc-500/90">
-                          May – August 2025
+                          August 2023 – May 2027
                         </p>
                       </div>
                     </li>
@@ -590,7 +605,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           >
-            © 2025 Jake Floch. Built with Next.js and Tailwind CSS.
+            © 2026 Jake Floch. Built with Next.js and Tailwind CSS.
           </motion.p>
         </div>
       </footer>
