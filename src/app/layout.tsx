@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jake Floch - Software Engineer",
     description:
-      "Jake Floch's portfolio showcasing modern web development",
+      "Portfolio of Jake Floch — Computer Science student at Emory and Data Engineer Intern at Expedia Group. Data pipelines, backend, and full-stack projects.",
     type: "website",
     locale: "en_US",
   },
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jake Floch - Software Engineer",
     description:
-      "Jake Floch's portfolio showcasing modern web development",
+      "Portfolio of Jake Floch — Computer Science student at Emory and Data Engineer Intern at Expedia Group. Data pipelines, backend, and full-stack projects.",
   },
 };
 
