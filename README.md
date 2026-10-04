@@ -1,4 +1,7 @@
-# Jake Floch
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/JakeFloch/jakefloch/raw/main/.github/banner-dark.svg">
+  <img src="https://github.com/JakeFloch/jakefloch/raw/main/.github/banner-light.svg" alt="Jake Floch — Software Engineer" width="100%">
+</picture>
 
 CS (AI concentration) + Business minor at Emory University, class of 2027.
 

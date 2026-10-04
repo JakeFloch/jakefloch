@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="t">
+  <title id="t">Jake Floch — Software Engineer</title>
+  <style>
+    .c { animation: lit 9s linear infinite backwards; }
+    @keyframes lit { 0% { opacity: 0 } 0.01% { opacity: 0.8 } 10.000% { opacity: 0 } 100% { opacity: 0 } }
+    .caret { animation: blink 1.2s linear infinite; }
+    @keyframes blink { 0% { opacity: 1 } 33.33% { opacity: 1 } 66.67% { opacity: 0 } 100% { opacity: 0 } }
+    @media (prefers-reduced-motion: reduce) { .c, .caret { animation: none; } }
+  </style>
+  <defs>
+    <clipPath id="card"><rect width="1280" height="320" rx="18"/></clipPath>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(24,24,27,0.05)" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glowP" cx="0.65" cy="0.08" r="0.6"><stop offset="0" stop-color="#a855f7" stop-opacity="0.07"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glowC" cx="0.3" cy="0.92" r="0.65"><stop offset="0" stop-color="#38bdf8" stop-opacity="0.07"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="nameFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3f3f46"/><stop offset="0.5" stop-color="#18181b"/><stop offset="1" stop-color="#52525b"/>
+    </linearGradient>
+    <linearGradient id="ul" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a855f7" stop-opacity="0"/>
+      <stop offset="0.33" stop-color="#a855f7" stop-opacity="0.75"/>
+      <stop offset="0.67" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="ulGlow" x="-10%" y="-400%" width="120%" height="900%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feFlood flood-color="#93c5fd" flood-opacity="0.25"/><feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="nameShadow" x="-5%" y="-20%" width="110%" height="150%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g clip-path="url(#card)">
+    <rect width="1280" height="320" fill="#fafafa"/>
+    <rect width="1280" height="320" fill="url(#glowP)"/>
+    <rect width="1280" height="320" fill="url(#glowC)"/>
+    <rect width="1280" height="320" fill="url(#grid)"/>
+    <rect class="c" x="0" y="240" width="20" height="20" fill="#a855f7" opacity="0" style="animation-delay:0.000s"/>
+    <rect class="c" x="20" y="240" width="20" height="20" fill="#a855f7" opacity="0" style="animation-delay:0.044s"/>
+    <rect class="c" x="20" y="220" width="20" height="20" fill="#a855f7" opacity="0" style="animation-delay:0.088s"/>
+    <rect class="c" x="40" y="220" width="20" height="20" fill="#a855f7" opacity="0" style="animation-delay:0.133s"/>
+    <rect class="c" x="60" y="220" width="20" height="20" fill="#a755f7" opacity="0" style="animation-delay:0.177s"/>
+    <rect class="c" x="80" y="220" width="20" height="20" fill="#a756f7" opacity="0" style="animation-delay:0.221s"/>
+    <rect class="c" x="80" y="200" width="20" height="20" fill="#a756f7" opacity="0" style="animation-delay:0.265s"/>
+    <rect class="c" x="100" y="200" width="20" height="20" fill="#a656f7" opacity="0" style="animation-delay:0.309s"/>
+    <rect class="c" x="120" y="200" width="20" height="20" fill="#a656f6" opacity="0" style="animation-delay:0.354s"/>
+    <rect class="c" x="120" y="180" width="20" height="20" fill="#a557f6" opacity="0" style="animation-delay:0.398s"/>
+    <rect class="c" x="140" y="180" width="20" height="20" fill="#a457f6" opacity="0" style="animation-delay:0.442s"/>
+    <rect class="c" x="160" y="180" width="20" height="20" fill="#a458f6" opacity="0" style="animation-delay:0.486s"/>
+    <rect class="c" x="160" y="160" width="20" height="20" fill="#a358f6" opacity="0" style="animation-delay:0.531s"/>
+    <rect class="c" x="180" y="160" width="20" height="20" fill="#a259f6" opacity="0" style="animation-delay:0.575s"/>
+    <rect class="c" x="180" y="140" width="20" height="20" fill="#a159f5" opacity="0" style="animation-delay:0.619s"/>
+    <rect class="c" x="200" y="140" width="20" height="20" fill="#a05af5" opacity="0" style="animation-delay:0.663s"/>
+    <rect class="c" x="200" y="120" width="20" height="20" fill="#9f5bf5" opacity="0" style="animation-delay:0.707s"/>
+    <rect class="c" x="220" y="120" width="20" height="20" fill="#9d5bf5" opacity="0" style="animation-delay:0.752s"/>
+    <rect class="c" x="220" y="100" width="20" height="20" fill="#9c5cf4" opacity="0" style="animation-delay:0.796s"/>
+    <rect class="c" x="240" y="100" width="20" height="20" fill="#9b5df4" opacity="0" style="animation-delay:0.840s"/>
+    <rect class="c" x="260" y="100" width="20" height="20" fill="#995ef4" opacity="0" style="animation-delay:0.884s"/>
+    <rect class="c" x="260" y="80" width="20" height="20" fill="#985ff4" opacity="0" style="animation-delay:0.928s"/>
+    <rect class="c" x="280" y="80" width="20" height="20" fill="#9660f3" opacity="0" style="animation-delay:0.973s"/>
+    <rect class="c" x="300" y="80" width="20" height="20" fill="#9561f3" opacity="0" style="animation-delay:1.017s"/>
+    <rect class="c" x="300" y="60" width="20" height="20" fill="#9362f2" opacity="0" style="animation-delay:1.061s"/>
+    <rect class="c" x="320" y="60" width="20" height="20" fill="#9163f2" opacity="0" style="animation-delay:1.105s"/>
+    <rect class="c" x="340" y="60" width="20" height="20" fill="#8f64f2" opacity="0" style="animation-delay:1.149s"/>
+    <rect class="c" x="360" y="60" width="20" height="20" fill="#8d65f1" opacity="0" style="animation-delay:1.194s"/>
+    <rect class="c" x="380" y="60" width="20" height="20" fill="#8b66f1" opacity="0" style="animation-delay:1.238s"/>
+    <rect class="c" x="400" y="60" width="20" height="20" fill="#8967f0" opacity="0" style="animation-delay:1.282s"/>
+    <rect class="c" x="420" y="60" width="20" height="20" fill="#8769f0" opacity="0" style="animation-delay:1.326s"/>
+    <rect class="c" x="440" y="60" width="20" height="20" fill="#856aef" opacity="0" style="animation-delay:1.371s"/>
+    <rect class="c" x="460" y="60" width="20" height="20" fill="#826bef" opacity="0" style="animation-delay:1.415s"/>
+    <rect class="c" x="480" y="60" width="20" height="20" fill="#806dee" opacity="0" style="animation-delay:1.459s"/>
+    <rect class="c" x="480" y="80" width="20" height="20" fill="#7e6eee" opacity="0" style="animation-delay:1.503s"/>
+    <rect class="c" x="500" y="80" width="20" height="20" fill="#7b70ed" opacity="0" style="animation-delay:1.547s"/>
+    <rect class="c" x="520" y="80" width="20" height="20" fill="#7871ed" opacity="0" style="animation-delay:1.592s"/>
+    <rect class="c" x="520" y="100" width="20" height="20" fill="#7673ec" opacity="0" style="animation-delay:1.636s"/>
+    <rect class="c" x="540" y="100" width="20" height="20" fill="#7375ec" opacity="0" style="animation-delay:1.680s"/>
+    <rect class="c" x="540" y="120" width="20" height="20" fill="#7076eb" opacity="0" style="animation-delay:1.724s"/>
+    <rect class="c" x="560" y="120" width="20" height="20" fill="#6d78ea" opacity="0" style="animation-delay:1.768s"/>
+    <rect class="c" x="560" y="140" width="20" height="20" fill="#6a7aea" opacity="0" style="animation-delay:1.813s"/>
+    <rect class="c" x="580" y="140" width="20" height="20" fill="#677ce9" opacity="0" style="animation-delay:1.857s"/>
+    <rect class="c" x="580" y="160" width="20" height="20" fill="#647ee8" opacity="0" style="animation-delay:1.901s"/>
+    <rect class="c" x="600" y="160" width="20" height="20" fill="#6180e8" opacity="0" style="animation-delay:1.945s"/>
+    <rect class="c" x="600" y="180" width="20" height="20" fill="#5e81e7" opacity="0" style="animation-delay:1.989s"/>
+    <rect class="c" x="620" y="180" width="20" height="20" fill="#5a83e6" opacity="0" style="animation-delay:2.034s"/>
+    <rect class="c" x="620" y="200" width="20" height="20" fill="#5786e6" opacity="0" style="animation-delay:2.078s"/>
+    <rect class="c" x="640" y="200" width="20" height="20" fill="#5488e5" opacity="0" style="animation-delay:2.122s"/>
+    <rect class="c" x="640" y="220" width="20" height="20" fill="#508ae4" opacity="0" style="animation-delay:2.166s"/>
+    <rect class="c" x="660" y="220" width="20" height="20" fill="#4d8be3" opacity="0" style="animation-delay:2.211s"/>
+    <rect class="c" x="660" y="240" width="20" height="20" fill="#4a8de3" opacity="0" style="animation-delay:2.255s"/>
+    <rect class="c" x="680" y="240" width="20" height="20" fill="#478fe2" opacity="0" style="animation-delay:2.299s"/>
+    <rect class="c" x="700" y="260" width="20" height="20" fill="#4491e1" opacity="0" style="animation-delay:2.343s"/>
+    <rect class="c" x="720" y="260" width="20" height="20" fill="#4193e1" opacity="0" style="animation-delay:2.387s"/>
+    <rect class="c" x="740" y="260" width="20" height="20" fill="#3e95e0" opacity="0" style="animation-delay:2.432s"/>
+    <rect class="c" x="760" y="260" width="20" height="20" fill="#3b96df" opacity="0" style="animation-delay:2.476s"/>
+    <rect class="c" x="760" y="280" width="20" height="20" fill="#3898df" opacity="0" style="animation-delay:2.520s"/>
+    <rect class="c" x="780" y="280" width="20" height="20" fill="#369ade" opacity="0" style="animation-delay:2.564s"/>
+    <rect class="c" x="800" y="280" width="20" height="20" fill="#339bde" opacity="0" style="animation-delay:2.608s"/>
+    <rect class="c" x="820" y="280" width="20" height="20" fill="#309ddd" opacity="0" style="animation-delay:2.653s"/>
+    <rect class="c" x="840" y="280" width="20" height="20" fill="#2e9edd" opacity="0" style="animation-delay:2.697s"/>
+    <rect class="c" x="840" y="260" width="20" height="20" fill="#2ca0dc" opacity="0.026" style="animation-delay:2.741s"/>
+    <rect class="c" x="860" y="260" width="20" height="20" fill="#29a1dc" opacity="0.065" style="animation-delay:2.785s"/>
+    <rect class="c" x="880" y="260" width="20" height="20" fill="#27a2db" opacity="0.104" style="animation-delay:2.829s"/>
+    <rect class="c" x="900" y="260" width="20" height="20" fill="#25a4db" opacity="0.144" style="animation-delay:2.874s"/>
+    <rect class="c" x="900" y="240" width="20" height="20" fill="#23a5da" opacity="0.183" style="animation-delay:2.918s"/>
+    <rect class="c" x="920" y="240" width="20" height="20" fill="#21a6da" opacity="0.222" style="animation-delay:2.962s"/>
+    <rect class="c" x="940" y="240" width="20" height="20" fill="#1fa7d9" opacity="0.262" style="animation-delay:3.006s"/>
+    <rect class="c" x="960" y="240" width="20" height="20" fill="#1da8d9" opacity="0.301" style="animation-delay:3.051s"/>
+    <rect class="c" x="960" y="220" width="20" height="20" fill="#1ba9d9" opacity="0.34" style="animation-delay:3.095s"/>
+    <rect class="c" x="980" y="220" width="20" height="20" fill="#19aad8" opacity="0.38" style="animation-delay:3.139s"/>
+    <rect class="c" x="980" y="200" width="20" height="20" fill="#18abd8" opacity="0.419" style="animation-delay:3.183s"/>
+    <rect class="c" x="1000" y="200" width="20" height="20" fill="#16acd7" opacity="0.458" style="animation-delay:3.227s"/>
+    <rect class="c" x="1000" y="180" width="20" height="20" fill="#15add7" opacity="0.497" style="animation-delay:3.272s"/>
+    <rect class="c" x="1020" y="180" width="20" height="20" fill="#13aed7" opacity="0.537" style="animation-delay:3.316s"/>
+    <rect class="c" x="1020" y="160" width="20" height="20" fill="#12afd7" opacity="0.576" style="animation-delay:3.360s"/>
+    <rect class="c" x="1040" y="160" width="20" height="20" fill="#11b0d6" opacity="0.615" style="animation-delay:3.404s"/>
+    <rect class="c" x="1040" y="140" width="20" height="20" fill="#0fb0d6" opacity="0.655" style="animation-delay:3.448s"/>
+    <rect class="c" x="1060" y="140" width="20" height="20" fill="#0eb1d6" opacity="0.694" style="animation-delay:3.493s"/>
+    <rect class="c" x="1060" y="120" width="20" height="20" fill="#0db2d6" opacity="0.733" style="animation-delay:3.537s"/>
+    <rect class="c" x="1080" y="120" width="20" height="20" fill="#0cb2d5" opacity="0.772" style="animation-delay:3.581s"/>
+    <rect class="c" x="1080" y="100" width="20" height="20" fill="#0bb3d5" opacity="0" style="animation-delay:3.625s"/>
+    <rect class="c" x="1100" y="100" width="20" height="20" fill="#0ab3d5" opacity="0" style="animation-delay:3.669s"/>
+    <rect class="c" x="1100" y="80" width="20" height="20" fill="#0ab4d5" opacity="0" style="animation-delay:3.714s"/>
+    <rect class="c" x="1120" y="80" width="20" height="20" fill="#09b4d5" opacity="0" style="animation-delay:3.758s"/>
+    <rect class="c" x="1140" y="80" width="20" height="20" fill="#08b5d5" opacity="0" style="animation-delay:3.802s"/>
+    <rect class="c" x="1140" y="60" width="20" height="20" fill="#08b5d4" opacity="0" style="animation-delay:3.846s"/>
+    <rect class="c" x="1160" y="60" width="20" height="20" fill="#07b5d4" opacity="0" style="animation-delay:3.891s"/>
+    <rect class="c" x="1180" y="60" width="20" height="20" fill="#07b5d4" opacity="0" style="animation-delay:3.935s"/>
+    <rect class="c" x="1180" y="40" width="20" height="20" fill="#07b6d4" opacity="0" style="animation-delay:3.979s"/>
+    <rect class="c" x="1200" y="40" width="20" height="20" fill="#06b6d4" opacity="0" style="animation-delay:4.023s"/>
+    <rect class="c" x="1220" y="40" width="20" height="20" fill="#06b6d4" opacity="0" style="animation-delay:4.067s"/>
+    <rect class="c" x="1240" y="40" width="20" height="20" fill="#06b6d4" opacity="0" style="animation-delay:4.112s"/>
+    <rect class="c" x="1260" y="40" width="20" height="20" fill="#06b6d4" opacity="0" style="animation-delay:4.156s"/>
+  </g>
+
+  <path d="M407.46 159.66Q398.82 159.66 392.84 156.02Q386.86 152.38 383.69 146.09Q380.52 139.80 380.42 131.69L396.33 130.96Q396.43 138.86 399.34 142.61Q402.26 146.35 407.46 146.35Q412.76 146.35 415.67 142.71Q418.58 139.07 418.58 131.48L418.58 84.16L434.39 84.16L434.39 131.48Q434.39 140.11 431.01 146.40Q427.63 152.70 421.60 156.18Q415.57 159.66 407.46 159.66M461.33 159.25Q452.59 159.25 447.18 155.24Q441.78 151.24 441.78 144.06Q441.78 136.68 446.40 132.68Q451.03 128.67 460.08 126.80L478.07 123.26Q478.07 112.34 468.61 112.34Q459.98 112.34 458.42 120.35L442.71 119.62Q444.27 110.47 450.98 105.74Q457.69 101.01 468.61 101.01Q481.09 101.01 487.38 106.99Q493.67 112.97 493.67 124.30L493.67 143.34Q493.67 145.73 494.45 146.51Q495.23 147.29 496.79 147.29L498.35 147.29L498.35 158Q497.62 158.21 496.01 158.42Q494.40 158.62 492.84 158.62Q488.58 158.62 485.20 156.80Q481.82 154.98 480.78 149.99L480.57 149.47Q478.49 153.94 473.50 156.60Q468.50 159.25 461.33 159.25M465.07 148.54Q470.90 148.54 474.48 145.10Q478.07 141.67 478.07 135.74L478.07 133.04L465.38 135.74Q457.79 137.20 457.79 142.61Q457.79 148.54 465.07 148.54M518.74 158L503.14 158L503.14 84.16L518.74 84.16L518.74 125.14L539.43 102.26L558.15 102.26L536.52 125.24L558.78 158L541.72 158L526.43 134.08L518.74 142.30M585.40 159.25Q576.87 159.25 570.58 155.61Q564.29 151.97 560.80 145.47Q557.32 138.97 557.32 130.13Q557.32 121.39 560.75 114.84Q564.18 108.29 570.48 104.65Q576.77 101.01 585.30 101.01Q593.62 101.01 599.75 104.65Q605.89 108.29 609.27 115.05Q612.65 121.81 612.65 131.17L612.65 134.29L573.44 134.29Q573.75 140.94 577.03 144.17Q580.30 147.39 585.71 147.39Q593.82 147.39 596.11 140.63L611.82 141.57Q609.53 149.89 602.51 154.57Q595.49 159.25 585.40 159.25M573.44 124.72L596.63 124.72Q596.32 118.58 593.25 115.57Q590.18 112.55 585.30 112.55Q580.41 112.55 577.24 115.72Q574.06 118.90 573.44 124.72M658.41 158L642.60 158L642.60 84.16L693.56 84.16L693.56 97.47L658.41 97.47L658.41 115.36L691.69 115.36L691.69 128.46L658.41 128.46M723.72 158L714.46 158Q707.60 158 703.75 154.62Q699.90 151.24 699.90 143.44L699.90 84.16L715.50 84.16L715.50 141.78Q715.50 144.27 716.65 145.31Q717.79 146.35 719.98 146.35L723.72 146.35M754.09 159.25Q745.56 159.25 739.22 155.66Q732.87 152.07 729.34 145.52Q725.80 138.97 725.80 130.13Q725.80 121.29 729.34 114.79Q732.87 108.29 739.22 104.65Q745.56 101.01 754.09 101.01Q762.62 101.01 769.01 104.65Q775.41 108.29 778.89 114.79Q782.38 121.29 782.38 130.13Q782.38 138.97 778.89 145.52Q775.41 152.07 769.01 155.66Q762.62 159.25 754.09 159.25M754.09 147.29Q759.91 147.29 763.14 142.76Q766.36 138.24 766.36 130.13Q766.36 122.02 763.14 117.49Q759.91 112.97 754.09 112.97Q748.26 112.97 745.04 117.49Q741.82 122.02 741.82 130.13Q741.82 138.24 745.04 142.76Q748.26 147.29 754.09 147.29M814.72 159.25Q806.19 159.25 799.80 155.61Q793.40 151.97 789.92 145.47Q786.43 138.97 786.43 130.13Q786.43 121.39 789.92 114.84Q793.40 108.29 799.80 104.65Q806.19 101.01 814.72 101.01Q822.10 101.01 827.98 103.61Q833.86 106.21 837.50 111.10Q841.14 115.98 841.97 122.85L825.85 123.58Q825.12 118.38 822.16 115.72Q819.19 113.07 814.72 113.07Q808.90 113.07 805.67 117.54Q802.45 122.02 802.45 130.13Q802.45 138.24 805.67 142.76Q808.90 147.29 814.72 147.29Q819.19 147.29 822.21 144.53Q825.22 141.78 825.85 136.16L841.97 136.78Q841.24 143.65 837.65 148.69Q834.06 153.74 828.19 156.49Q822.31 159.25 814.72 159.25M863.60 158L848 158L848 84.16L863.60 84.16L863.60 109.12Q865.89 104.96 869.94 102.98Q874 101.01 878.99 101.01Q888.35 101.01 893.08 106.94Q897.82 112.86 897.82 122.12L897.82 158L882.22 158L882.22 125.86Q882.22 119.62 880.24 116.50Q878.26 113.38 873.79 113.38Q869.01 113.38 866.30 116.66Q863.60 119.94 863.60 126.28" fill="url(#nameFill)" filter="url(#nameShadow)"/>
+  <rect x="449.4" y="184" width="381.1" height="3" rx="1.5" fill="url(#ul)" filter="url(#ulGlow)"/>
+  <path d="M466.32 242.51Q463.92 242.51 462.06 241.52Q460.21 240.53 459.09 238.78Q457.97 237.04 457.77 234.74L460.65 234.54Q461.01 237.07 462.49 238.45Q463.98 239.82 466.38 239.82Q468.75 239.82 470.01 238.91Q471.28 238 471.28 236.34Q471.28 235.25 470.78 234.46Q470.29 233.68 468.93 232.99Q467.57 232.30 464.91 231.57Q462.54 230.90 461.09 230.08Q459.63 229.26 458.97 228.10Q458.32 226.93 458.32 225.23Q458.32 223.31 459.23 221.86Q460.14 220.40 461.84 219.58Q463.53 218.77 465.87 218.77Q468.21 218.77 469.87 219.71Q471.53 220.66 472.51 222.29Q473.49 223.92 473.74 226L470.86 226.19Q470.57 224.11 469.34 222.78Q468.11 221.46 465.81 221.46Q463.69 221.46 462.45 222.46Q461.20 223.47 461.20 225.10Q461.20 226.16 461.66 226.85Q462.13 227.54 463.31 228.06Q464.49 228.59 466.64 229.20Q469.42 229.97 471.07 230.93Q472.72 231.89 473.44 233.20Q474.16 234.51 474.16 236.40Q474.16 238.19 473.17 239.58Q472.17 240.98 470.41 241.74Q468.65 242.51 466.32 242.51M485.83 242.38Q483.50 242.38 481.75 241.30Q480.01 240.21 479.05 238.21Q478.09 236.21 478.09 233.52Q478.09 230.80 479.05 228.82Q480.01 226.83 481.75 225.74Q483.50 224.66 485.83 224.66Q488.17 224.66 489.91 225.74Q491.66 226.83 492.62 228.82Q493.58 230.80 493.58 233.52Q493.58 236.21 492.62 238.21Q491.66 240.21 489.91 241.30Q488.17 242.38 485.83 242.38M485.83 239.82Q488.17 239.82 489.47 238.14Q490.76 236.46 490.76 233.52Q490.76 230.58 489.47 228.90Q488.17 227.22 485.83 227.22Q483.50 227.22 482.20 228.90Q480.91 230.58 480.91 233.52Q480.91 236.46 482.20 238.14Q483.50 239.82 485.83 239.82M505.57 242L502.88 242L502.88 227.41L498.34 227.41L498.34 225.04L502.88 225.04L502.88 223.95Q502.88 221.68 504.05 220.48Q505.22 219.28 507.62 219.28L513.06 219.28L513.06 221.65L507.62 221.65Q506.63 221.65 506.10 222.27Q505.57 222.90 505.57 223.95L505.57 225.04L512.74 225.04L512.74 227.41L505.57 227.41M532.61 242L528.06 242Q523.17 242 523.17 237.33L523.17 227.41L517.57 227.41L517.57 225.04L523.17 225.04L523.17 221.07L525.85 221.07L525.85 225.04L532.61 225.04L532.61 227.41L525.85 227.41L525.85 237.33Q525.85 239.63 528.06 239.63L532.61 239.63M543.19 242L539.83 242L536.47 225.04L539.42 225.04L541.63 239.18L544.12 227.41L546.75 227.41L549.24 239.18L551.45 225.04L554.39 225.04L551.07 242L547.67 242L545.43 231.31M563.06 242.38Q561.46 242.38 560.18 241.81Q558.90 241.23 558.16 240.19Q557.43 239.15 557.43 237.78Q557.43 235.60 558.72 234.40Q560.02 233.20 562.80 232.66L568.50 231.50Q568.50 229.33 567.52 228.27Q566.55 227.22 564.72 227.22Q562.96 227.22 561.97 228Q560.98 228.78 560.60 230.26L557.75 230.03Q558.23 227.63 560.04 226.14Q561.84 224.66 564.72 224.66Q567.80 224.66 569.49 226.50Q571.19 228.34 571.19 231.57L571.19 238.61Q571.19 239.18 571.44 239.41Q571.70 239.63 572.21 239.63L573.30 239.63L573.30 242Q572.79 242.06 571.89 242.06Q570.55 242.06 569.73 241.52Q568.92 240.98 568.63 239.76L568.60 239.60Q567.92 240.85 566.40 241.62Q564.88 242.38 563.06 242.38M563.32 240.02Q565.91 240.02 567.20 238.70Q568.50 237.39 568.50 235.28L568.50 233.81L563.32 234.83Q561.59 235.15 560.92 235.81Q560.24 236.46 560.24 237.52Q560.24 238.70 561.06 239.36Q561.88 240.02 563.32 240.02M590.93 242L578.45 242L578.45 239.63L582.86 239.63L582.86 227.41L578.45 227.41L578.45 225.04L585.10 225.04L585.29 228.34Q586.09 225.04 589.36 225.04L592.85 225.04L592.85 227.47L589.39 227.47Q587.53 227.47 586.54 228.58Q585.55 229.68 585.55 231.76L585.55 239.63L590.93 239.63M605.23 242.38Q602.83 242.38 601.08 241.30Q599.34 240.21 598.39 238.21Q597.45 236.21 597.45 233.52Q597.45 230.83 598.39 228.85Q599.34 226.86 601.05 225.76Q602.76 224.66 605.10 224.66Q607.31 224.66 609 225.70Q610.70 226.74 611.66 228.72Q612.62 230.70 612.62 233.55L612.62 234.35L600.27 234.35Q600.43 237.07 601.72 238.45Q603.02 239.82 605.23 239.82Q606.89 239.82 607.96 239.04Q609.03 238.26 609.45 236.98L612.33 237.20Q611.66 239.47 609.79 240.93Q607.91 242.38 605.23 242.38M600.27 231.98L609.67 231.98Q609.48 229.52 608.23 228.37Q606.99 227.22 605.10 227.22Q603.15 227.22 601.88 228.42Q600.62 229.62 600.27 231.98M652.13 242L638.05 242L638.05 219.28L651.87 219.28L651.87 221.97L640.80 221.97L640.80 229.30L651.49 229.30L651.49 231.92L640.80 231.92L640.80 239.31L652.13 239.31M660.41 242L657.72 242L657.72 225.04L660.19 225.04L660.25 228.08Q660.92 226.35 662.41 225.50Q663.90 224.66 665.66 224.66Q667.61 224.66 668.91 225.52Q670.20 226.38 670.87 227.84Q671.55 229.30 671.55 231.09L671.55 242L668.86 242L668.86 231.86Q668.86 229.49 667.93 228.26Q667 227.02 665.08 227.02Q663.13 227.02 661.77 228.26Q660.41 229.49 660.41 231.86M684.40 247.18Q681.68 247.18 679.76 245.84Q677.84 244.50 677.30 242.26L680.12 242.06Q680.50 243.25 681.48 243.94Q682.45 244.62 684.40 244.62Q686.71 244.62 687.94 243.70Q689.17 242.77 689.17 240.91L689.17 238.16Q688.56 239.50 687.22 240.30Q685.88 241.10 684.21 241.10Q682.07 241.10 680.39 240.05Q678.71 238.99 677.76 237.14Q676.82 235.28 676.82 232.88Q676.82 230.45 677.75 228.61Q678.68 226.77 680.32 225.71Q681.97 224.66 684.08 224.66Q685.88 224.66 687.30 225.49Q688.72 226.32 689.30 227.73L689.30 225.04L691.86 225.04L691.86 240.85Q691.86 243.82 689.89 245.50Q687.92 247.18 684.40 247.18M684.34 238.54Q686.52 238.54 687.83 237.02Q689.14 235.50 689.17 232.88Q689.24 230.26 687.89 228.74Q686.55 227.22 684.34 227.22Q682.10 227.22 680.87 228.74Q679.64 230.26 679.64 232.88Q679.64 235.50 680.90 237.02Q682.16 238.54 684.34 238.54M712.69 242L697.33 242L697.33 239.63L704.14 239.63L704.14 227.41L697.65 227.41L697.65 225.04L706.83 225.04L706.83 239.63L712.69 239.63L712.69 242M706.70 222.38L703.89 222.38L703.89 219.25L706.70 219.25M720.01 242L717.32 242L717.32 225.04L719.79 225.04L719.85 228.08Q720.52 226.35 722.01 225.50Q723.50 224.66 725.26 224.66Q727.21 224.66 728.51 225.52Q729.80 226.38 730.47 227.84Q731.15 229.30 731.15 231.09L731.15 242L728.46 242L728.46 231.86Q728.46 229.49 727.53 228.26Q726.60 227.02 724.68 227.02Q722.73 227.02 721.37 228.26Q720.01 229.49 720.01 231.86M744.29 242.38Q741.89 242.38 740.15 241.30Q738.40 240.21 737.46 238.21Q736.52 236.21 736.52 233.52Q736.52 230.83 737.46 228.85Q738.40 226.86 740.12 225.76Q741.83 224.66 744.16 224.66Q746.37 224.66 748.07 225.70Q749.76 226.74 750.72 228.72Q751.68 230.70 751.68 233.55L751.68 234.35L739.33 234.35Q739.49 237.07 740.79 238.45Q742.08 239.82 744.29 239.82Q745.96 239.82 747.03 239.04Q748.10 238.26 748.52 236.98L751.40 237.20Q750.72 239.47 748.85 240.93Q746.98 242.38 744.29 242.38M739.33 231.98L748.74 231.98Q748.55 229.52 747.30 228.37Q746.05 227.22 744.16 227.22Q742.21 227.22 740.95 228.42Q739.68 229.62 739.33 231.98M764.16 242.38Q761.76 242.38 760.01 241.30Q758.27 240.21 757.33 238.21Q756.38 236.21 756.38 233.52Q756.38 230.83 757.33 228.85Q758.27 226.86 759.98 225.76Q761.69 224.66 764.03 224.66Q766.24 224.66 767.93 225.70Q769.63 226.74 770.59 228.72Q771.55 230.70 771.55 233.55L771.55 234.35L759.20 234.35Q759.36 237.07 760.65 238.45Q761.95 239.82 764.16 239.82Q765.82 239.82 766.89 239.04Q767.97 238.26 768.38 236.98L771.26 237.20Q770.59 239.47 768.72 240.93Q766.85 242.38 764.16 242.38M759.20 231.98L768.61 231.98Q768.41 229.52 767.17 228.37Q765.92 227.22 764.03 227.22Q762.08 227.22 760.81 228.42Q759.55 229.62 759.20 231.98M789.59 242L777.11 242L777.11 239.63L781.53 239.63L781.53 227.41L777.11 227.41L777.11 225.04L783.77 225.04L783.96 228.34Q784.76 225.04 788.03 225.04L791.51 225.04L791.51 227.47L788.06 227.47Q786.20 227.47 785.21 228.58Q784.22 229.68 784.22 231.76L784.22 239.63L789.59 239.63" fill="#52525b"/>
+  <path class="caret" d="M815.31 245.52L812.75 245.52L812.75 218L815.31 218" fill="#a855f7"/>
+
+  <rect x="0.5" y="0.5" width="1279" height="319" rx="17.5" fill="none" stroke="#e4e4e7"/>
+</svg>
