@@ -1,5 +1,9 @@
 # Jake Floch
 
-Student at Emory University studying Computer Science with a concentration in A.I. and a Business minor.
+CS (AI concentration) + Business minor at Emory University, class of 2027.
 
-[Personal Website](https://jakefloch.dev/)
+This past summer I interned on Expedia's Global Payments team, where I built an AI-powered regression testing framework for payment data at billion-row scale. Before that, I was a developer in a research lab at Emory's School of Nursing, turning a repo of ad-hoc scripts into a thermal imaging pipeline for pressure-injury detection.
+
+[Website](https://jakefloch.dev) · [LinkedIn](https://linkedin.com/in/jake-floch)
+
+[![Skills](https://skillicons.dev/icons?i=py,java,js,ts,react,nextjs,tailwind,postgres,opencv,unity,git)](https://skillicons.dev)
