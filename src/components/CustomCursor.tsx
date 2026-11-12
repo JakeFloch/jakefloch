@@ -75,13 +75,19 @@ export default function CustomCursor() {
       show();
     };
 
-    const onPointerLeave = () => hide();
+    // window doesn't reliably fire pointerleave; a pointerout with no
+    // relatedTarget means the pointer left the document entirely.
+    const onPointerOut = (e: PointerEvent) => {
+      if (!e.relatedTarget) hide();
+    };
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("pointerleave", onPointerLeave);
+    document.addEventListener("pointerout", onPointerOut);
+    window.addEventListener("blur", hide);
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("pointerout", onPointerOut);
+      window.removeEventListener("blur", hide);
     };
   }, []);
 
