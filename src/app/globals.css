@@ -267,10 +267,8 @@ body {
   backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
-.nav-link-active {
-  position: relative;
-}
-.nav-link-active::after {
+/* Sliding nav indicator (pill is the element, underline is ::after) */
+.nav-indicator::after {
   content: "";
   position: absolute;
   left: 0;
