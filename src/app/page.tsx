@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import {
+  motion,
+  animate,
+  useMotionValue,
+  useMotionValueEvent,
+} from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,30 +26,187 @@ const fadeIn = {
   visible: { opacity: 1 },
 };
 
+const NAV_ITEMS = [
+  { label: "Home", id: "hero" },
+  { label: "About", id: "about" },
+  { label: "Projects", id: "projects" },
+  { label: "Contact", id: "contact" },
+];
+const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
+const INDICATOR_SPRING = { type: "spring", stiffness: 400, damping: 40 } as const;
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+// Active section = last one whose top has crossed a probe line 35% down the
+// viewport, or the last section once the page is scrolled to the bottom.
+function getActiveIndex() {
+  const atBottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 2;
+  if (atBottom) return SECTION_IDS.length - 1;
+  const probe = window.innerHeight * 0.35;
+  let current = 0;
+  SECTION_IDS.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= probe) current = i;
+  });
+  return current;
+}
+
 export default function Home() {
-  const [activeSection, setActiveSection] = useState("hero");
+  const [activeIndex, setActiveIndex] = useState(0);
+  // Which nav label sits under the sliding pill (drives the white text).
+  const [highlightIndex, setHighlightIndex] = useState(0);
+  const activeRef = useRef(0);
+
+  // Sliding pill + underline, positioned by motion values (no re-renders).
+  const navRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const indicatorX = useMotionValue(0);
+  const indicatorW = useMotionValue(0);
+  // Set while a nav click's smooth scroll is in flight. The pill then tracks
+  // scroll progress from its start position to the target button, so it moves
+  // as one motion that shares the scroll's easing and lands as the scroll does.
+  const flightRef = useRef<null | {
+    startY: number;
+    targetY: number;
+    fromX: number;
+    fromW: number;
+    toIndex: number;
+  }>(null);
+
+  const measure = (i: number) => {
+    const b = navRefs.current[i];
+    return b ? { x: b.offsetLeft, w: b.offsetWidth } : null;
+  };
+
+  const moveIndicatorTo = (i: number, instant = false) => {
+    const m = measure(i);
+    if (!m) return;
+    if (instant) {
+      indicatorX.jump(m.x);
+      indicatorW.jump(m.w);
+    } else {
+      animate(indicatorX, m.x, INDICATOR_SPRING);
+      animate(indicatorW, m.w, INDICATOR_SPRING);
+    }
+  };
+
+  useMotionValueEvent(indicatorX, "change", (x) => {
+    const center = x + indicatorW.get() / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    NAV_ITEMS.forEach((_, i) => {
+      const m = measure(i);
+      if (!m) return;
+      const d = Math.abs(m.x + m.w / 2 - center);
+      if (d < bestDist) {
+        bestDist = d;
+        best = i;
+      }
+    });
+    setHighlightIndex(best);
+  });
+
+  // Place the pill before first paint and whenever the nav resizes.
+  useLayoutEffect(() => {
+    const container = navRefs.current[0]?.parentElement;
+    const place = () => {
+      if (!flightRef.current) moveIndicatorTo(activeRef.current, true);
+    };
+    place();
+    if (!container) return;
+    const ro = new ResizeObserver(place);
+    ro.observe(container);
+    return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    const sections = ["hero", "about", "projects", "contact"];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { threshold: 0.3, rootMargin: "-100px 0px -100px 0px" }
-    );
-    sections.forEach((section) => {
-      const el = document.getElementById(section);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    let frame = 0;
+
+    const endFlight = () => {
+      if (!flightRef.current) return;
+      flightRef.current = null;
+      moveIndicatorTo(activeRef.current); // no-op if already on target
+    };
+
+    const update = () => {
+      frame = 0;
+      const flight = flightRef.current;
+      if (flight) {
+        const y = window.scrollY;
+        const span = flight.targetY - flight.startY;
+        const p = span === 0 ? 1 : clamp01((y - flight.startY) / span);
+        const to = measure(flight.toIndex);
+        if (to) {
+          indicatorX.set(lerp(flight.fromX, to.x, p));
+          indicatorW.set(lerp(flight.fromW, to.w, p));
+        }
+      }
+      const idx = getActiveIndex();
+      const changed = idx !== activeRef.current;
+      activeRef.current = idx;
+      setActiveIndex(idx);
+      if (flight && Math.abs(window.scrollY - flight.targetY) <= 1) {
+        endFlight();
+      } else if (!flight && changed) {
+        moveIndicatorTo(idx);
+      }
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    // User takes over the scroll mid-flight: fall back to scroll-spy.
+    const onUserScroll = () => endFlight();
+
+    activeRef.current = getActiveIndex();
+    setActiveIndex(activeRef.current);
+    moveIndicatorTo(activeRef.current, true);
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scrollend", endFlight);
+    window.addEventListener("wheel", onUserScroll, { passive: true });
+    window.addEventListener("touchstart", onUserScroll, { passive: true });
+    window.addEventListener("keydown", onUserScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scrollend", endFlight);
+      window.removeEventListener("wheel", onUserScroll);
+      window.removeEventListener("touchstart", onUserScroll);
+      window.removeEventListener("keydown", onUserScroll);
+      cancelAnimationFrame(frame);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
-    el?.scrollIntoView({ behavior: "smooth" });
-    setActiveSection(sectionId);
+    if (!el) return;
+    const toIndex = SECTION_IDS.indexOf(sectionId);
+    const maxY =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const targetY = Math.min(
+      maxY,
+      Math.max(0, el.getBoundingClientRect().top + window.scrollY)
+    );
+    if (toIndex >= 0) {
+      indicatorX.stop();
+      indicatorW.stop();
+      if (Math.abs(targetY - window.scrollY) > 1) {
+        flightRef.current = {
+          startY: window.scrollY,
+          targetY,
+          fromX: indicatorX.get(),
+          fromW: indicatorW.get(),
+          toIndex,
+        };
+      } else {
+        moveIndicatorTo(toIndex);
+      }
+    }
+    el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -56,25 +218,33 @@ export default function Home() {
             <div className="text-2xl font-bold text-zinc-100 tracking-tight">
               Jake Floch
             </div>
-            <div className="hidden md:flex items-center gap-2">
-              {["Home", "About", "Projects", "Contact"].map((item) => {
-                const id =
-                  item.toLowerCase() === "home" ? "hero" : item.toLowerCase();
-                const active = activeSection === id;
+            <div className="hidden md:flex items-center gap-2 relative">
+              {/* Shared pill + underline that slides between items */}
+              <motion.span
+                aria-hidden
+                className="nav-indicator pointer-events-none absolute left-0 top-0 h-full rounded-md bg-primary"
+                style={{ x: indicatorX, width: indicatorW }}
+              />
+              {NAV_ITEMS.map(({ label, id }, i) => {
+                const lit = highlightIndex === i;
                 return (
                   <Button
-                    key={item}
-                    variant={active ? "default" : "ghost"}
+                    key={id}
+                    ref={(el) => {
+                      navRefs.current[i] = el;
+                    }}
+                    variant="ghost"
                     size="sm"
                     className={`relative font-medium transition-colors px-4 ${
-                      active
-                        ? "nav-link-active text-primary-foreground"
+                      lit
+                        ? "text-primary-foreground hover:text-primary-foreground hover:bg-transparent"
                         : "text-zinc-300"
                     }`}
+                    aria-current={activeIndex === i ? "true" : undefined}
                     onClick={() => scrollToSection(id)}
                     data-grid-shield
                   >
-                    {item}
+                    {label}
                   </Button>
                 );
               })}
