@@ -10,7 +10,7 @@ function Frame({ children }: { children: ReactNode }) {
       className="relative flex aspect-[16/10] items-center justify-center overflow-hidden border-b border-line bg-ink"
     >
       <div className="visual-grid absolute inset-0" />
-      <div className="relative transition-transform duration-700 ease-out group-hover:scale-[1.04]">
+      <div className="relative scale-[0.82] transition-transform duration-700 ease-out group-hover:scale-[0.87]">
         {children}
       </div>
     </div>

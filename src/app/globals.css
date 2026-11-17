@@ -225,6 +225,14 @@ em {
   animation: scan 3.2s ease-in-out infinite;
 }
 
+/* Scroll container without a visible scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Form fields */
 .field {
   width: 100%;

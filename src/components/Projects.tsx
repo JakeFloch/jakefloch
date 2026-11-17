@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import HarnessDemo from "./HarnessDemo";
+import ProjectRail from "./ProjectRail";
 import {
   CornucopiaVisual,
   GalleryBoardVisual,
@@ -68,17 +69,69 @@ const PROJECTS: Project[] = [
   },
 ];
 
-function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
+function ExternalLink({
+  href,
+  children,
+  clone = false,
+}: {
+  href: string;
+  children: ReactNode;
+  clone?: boolean;
+}) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      tabIndex={clone ? -1 : undefined}
       className="link text-sm font-medium"
     >
       {children} <span aria-hidden>↗</span>
     </a>
   );
+}
+
+// One pass of the project cards. The rail repeats these to loop; repeats are
+// clones, kept out of the tab order.
+function cards(clone: boolean) {
+  return PROJECTS.map((p, i) => (
+    <article
+      key={p.title}
+      className="group flex w-[18.5rem] shrink-0 flex-col overflow-hidden rounded-3xl border border-line bg-ink-2 transition-colors duration-300 hover:border-fg/25 sm:w-[21rem]"
+    >
+      <p.Visual />
+      <div className="flex flex-1 flex-col p-6">
+        <span className="label">
+          {String(i + 2).padStart(2, "0")} · {p.kind}
+        </span>
+        <h3 className="mt-3 font-display text-2xl leading-none tracking-[-0.03em]">
+          {p.title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-fg/70">
+          {p.description}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {p.tech.map((t) => (
+            <span key={t} className="chip">
+              {t}
+            </span>
+          ))}
+        </div>
+        <div className="mt-auto flex gap-6 pt-6">
+          <span className="text-accent">
+            <ExternalLink href={p.links.demo} clone={clone}>
+              Live demo
+            </ExternalLink>
+          </span>
+          <span className="text-fg/70">
+            <ExternalLink href={p.links.github} clone={clone}>
+              GitHub
+            </ExternalLink>
+          </span>
+        </div>
+      </div>
+    </article>
+  ));
 }
 
 export default function Projects() {
@@ -162,46 +215,14 @@ export default function Projects() {
         </article>
       </Reveal>
 
-      {/* The rest */}
-      <div className="mt-5 grid gap-5 md:grid-cols-2">
-        {PROJECTS.map((p, i) => (
-          <Reveal key={p.title} delay={(i % 2) * 0.08}>
-            <article
-              className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-ink-2 transition-colors duration-300 hover:border-fg/25"
-            >
-              <p.Visual />
-              <div className="relative z-10 flex flex-1 flex-col p-7 md:p-9">
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="font-display text-3xl leading-none tracking-[-0.03em] md:text-4xl">
-                    {p.title}
-                  </h3>
-                  <span className="label shrink-0">
-                    {String(i + 2).padStart(2, "0")} · {p.kind}
-                  </span>
-                </div>
-                <p className="mt-5 leading-relaxed text-fg/70">
-                  {p.description}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {p.tech.map((t) => (
-                    <span key={t} className="chip">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-auto flex gap-7 pt-8">
-                  <span className="text-accent">
-                    <ExternalLink href={p.links.demo}>Live demo</ExternalLink>
-                  </span>
-                  <span className="text-fg/70">
-                    <ExternalLink href={p.links.github}>GitHub</ExternalLink>
-                  </span>
-                </div>
-              </div>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+      {/* The rest: a slow, looping side-scroller */}
+      <Reveal className="mt-16 md:mt-24">
+        <div className="mb-6 flex items-center justify-between">
+          <p className="label">More projects</p>
+          <p className="label">Scroll or hover to pause</p>
+        </div>
+        <ProjectRail sets={[cards(false), cards(true), cards(true)]} />
+      </Reveal>
     </section>
   );
 }
