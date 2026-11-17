@@ -239,7 +239,7 @@ export default function Projects() {
       <Reveal className="mt-16 md:mt-24">
         <div className="mb-6 flex items-center justify-between">
           <p className="label">More projects</p>
-          <p className="label">Scroll or hover to pause</p>
+          <p className="label">Drag to scroll</p>
         </div>
         <ProjectRail sets={[cards(false), cards(true), cards(true)]} />
       </Reveal>

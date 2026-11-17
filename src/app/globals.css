@@ -228,9 +228,22 @@ em {
 /* Scroll container without a visible scrollbar */
 .no-scrollbar {
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Draggable project rail */
+.rail {
+  cursor: grab;
+  overscroll-behavior-x: contain;
+}
+.rail[data-dragging="true"] {
+  cursor: grabbing;
+  user-select: none;
 }
 
 /* Form fields */
