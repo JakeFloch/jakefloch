@@ -6,15 +6,19 @@ const FRICTION_MS = 700; // time constant for a throw easing back to DRIFT
 const DRAG_THRESHOLD = 6; // px of movement before a press becomes a drag
 const MAX_FLING = 5000; // px per second
 const KEY_NUDGE = 1100; // px per second given by an arrow key
+// The animation's clock starts this many loops in, so playing it backwards
+// (after a throw to the right) never runs into time zero.
+const HEADROOM_LOOPS = 10000;
 
 // A horizontal strip of cards that drifts on its own and loops seamlessly.
-// `sets` are identical copies of the same cards laid end to end; the track is
-// moved with a GPU transform and wraps by one copy's width.
+// `sets` are identical copies of the same cards laid end to end.
 //
-// It can be grabbed and thrown. A throw sets the direction and speed, and the
-// speed then decays exponentially back to DRIFT, never to zero: the rail only
-// stands still while it is actually being held. Horizontal trackpad scrolling
-// and the arrow keys move it too.
+// The drift is a Web Animations API animation on the track's transform, so
+// the browser runs it on the compositor: it costs the main thread nothing,
+// even while the page scrolls. JavaScript only steps in while the rail is
+// being dragged, and for the second or two a throw takes to settle, by
+// seeking the animation or changing its playback rate. The rate never drops
+// below the drift speed, so the rail only stands still while it is held.
 export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
@@ -24,84 +28,106 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
     const track = trackRef.current;
     if (!el || !track) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const rest = reduce ? 0 : DRIFT;
 
-    let raf = 0;
-    let running = false;
-    let last = 0;
-    let x = 0; // px scrolled, always within [0, period)
+    let anim: Animation | null = null;
+    let period = 0; // px in one copy of the cards
+    let duration = 1; // ms for one loop at drift speed
     let dir = 1; // 1 moves the cards left, -1 right
-    let speed = rest; // px per second, never below `rest` unless held
-    let period = 0;
+    let visible = false;
     let keyboardFocus = false;
 
-    // Drag state
+    // ---- Dragging ----
     let pressed = false;
     let dragging = false;
     let pointerId = -1;
     let startX = 0;
     let startPos = 0;
     let lastX = 0;
-    let lastT = 0;
+    let lastMoveT = 0;
     let dragVel = 0;
     let suppressClick = false;
 
-    const wrap = (v: number) =>
-      period > 0 ? ((v % period) + period) % period : v;
-    const render = () => {
-      track.style.transform = `translate3d(${-x}px, 0, 0)`;
+    // Position helpers: x is px scrolled, in [0, period).
+    const timeFor = (x: number) =>
+      (HEADROOM_LOOPS + ((x % period) + period) % period / period) * duration;
+    const currentX = () => {
+      if (!anim || period <= 0) return 0;
+      const t = Number(anim.currentTime ?? 0);
+      return (((t % duration) + duration) % duration / duration) * period;
     };
 
-    // Layout is only read here, never inside the animation frame.
-    const measure = () => {
+    // Speed easing after a throw or key press: one small rAF loop that only
+    // runs until the rate is back to the drift.
+    let rate = 1; // multiple of DRIFT, always >= 1 in magnitude unless held
+    let settleRaf = 0;
+    let lastT = 0;
+    const setRate = (r: number) => {
+      rate = r;
+      if (!anim) return;
+      const effective = reduce || keyboardFocus ? 0 : r;
+      if (effective === 0) anim.pause();
+      else {
+        anim.playbackRate = effective;
+        if (visible && anim.playState !== "running") anim.play();
+      }
+    };
+    const settle = (t: number) => {
+      const dt = Math.min(48, t - lastT);
+      lastT = t;
+      const mag = 1 + (Math.abs(rate) - 1) * Math.exp(-dt / FRICTION_MS);
+      if (mag - 1 < 0.02) {
+        setRate(dir);
+        settleRaf = 0;
+        return;
+      }
+      setRate(dir * mag);
+      settleRaf = requestAnimationFrame(settle);
+    };
+    const throwAt = (pxPerSec: number) => {
+      cancelAnimationFrame(settleRaf);
+      const v = Math.max(-MAX_FLING, Math.min(MAX_FLING, pxPerSec));
+      if (Math.abs(v) > DRIFT) dir = v > 0 ? 1 : -1;
+      if (reduce || Math.abs(v) <= DRIFT) {
+        setRate(dir);
+        return;
+      }
+      setRate(v / DRIFT);
+      lastT = performance.now();
+      settleRaf = requestAnimationFrame(settle);
+    };
+
+    // (Re)build the animation for the current card widths, keeping place.
+    const build = () => {
       const a = track.children[0] as HTMLElement | undefined;
       const b = track.children[1] as HTMLElement | undefined;
-      period = a && b ? b.offsetLeft - a.offsetLeft : 0;
-      x = wrap(x);
-      render();
+      const next = a && b ? b.offsetLeft - a.offsetLeft : 0;
+      if (next <= 0 || next === period) return;
+      const x = period > 0 ? currentX() * (next / period) : 0;
+      anim?.cancel();
+      period = next;
+      duration = (period / DRIFT) * 1000;
+      anim = track.animate(
+        [
+          { transform: "translate3d(0, 0, 0)" },
+          { transform: `translate3d(${-period}px, 0, 0)` },
+        ],
+        { duration, iterations: Infinity, easing: "linear" }
+      );
+      anim.currentTime = timeFor(x);
+      if (!visible) anim.pause();
+      setRate(rate);
     };
 
-    const tick = (t: number) => {
-      const dt = Math.min(48, t - last);
-      last = t;
-      if (!dragging) {
-        const floor = keyboardFocus ? 0 : rest;
-        speed = floor + (speed - floor) * Math.exp(-dt / FRICTION_MS);
-        if (speed - floor < 0.5) speed = floor;
-        x = wrap(x + (dir * speed * dt) / 1000);
-      }
-      render();
-      raf = requestAnimationFrame(tick);
-    };
-    const start = () => {
-      if (running) return;
-      running = true;
-      last = performance.now();
-      raf = requestAnimationFrame(tick);
-    };
-    const stop = () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    };
-
-    // The loop only runs while the rail is on screen.
-    const io = new IntersectionObserver(([entry]) =>
-      entry.isIntersecting ? start() : stop()
-    );
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (!anim) return;
+      if (visible && !dragging) setRate(rate);
+      else anim.pause();
+    });
     io.observe(el);
-    const ro = new ResizeObserver(measure);
+    const ro = new ResizeObserver(build);
     ro.observe(track);
-    measure();
-
-    const throwWith = (v: number) => {
-      const clamped = Math.max(-MAX_FLING, Math.min(MAX_FLING, v));
-      if (Math.abs(clamped) > rest) {
-        dir = clamped > 0 ? 1 : -1;
-        speed = Math.abs(clamped);
-      } else {
-        speed = rest;
-      }
-    };
+    build();
 
     const onDown = (e: PointerEvent) => {
       if (e.pointerType === "mouse" && e.button !== 0) return;
@@ -109,17 +135,19 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
       dragging = false;
       pointerId = e.pointerId;
       startX = lastX = e.clientX;
-      startPos = x;
-      lastT = e.timeStamp;
+      lastMoveT = e.timeStamp;
       dragVel = 0;
     };
 
     const onMove = (e: PointerEvent) => {
-      if (!pressed || e.pointerId !== pointerId) return;
+      if (!pressed || e.pointerId !== pointerId || !anim) return;
       const dx = e.clientX - startX;
       if (!dragging) {
         if (Math.abs(dx) < DRAG_THRESHOLD) return;
         dragging = true;
+        cancelAnimationFrame(settleRaf);
+        anim.pause();
+        startPos = currentX() + dx; // so the rail doesn't jump by the threshold
         el.dataset.dragging = "true";
         try {
           el.setPointerCapture(pointerId);
@@ -127,15 +155,15 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
           // Pointer already gone; the drag still works while over the rail.
         }
       }
-      x = wrap(startPos - dx);
+      anim.currentTime = timeFor(startPos - dx);
       // Smoothed pointer velocity, so one jittery sample can't set the throw.
-      const dtMove = e.timeStamp - lastT;
+      const dtMove = e.timeStamp - lastMoveT;
       if (dtMove > 0) {
         const instant = (-(e.clientX - lastX) / dtMove) * 1000;
         dragVel = dragVel * 0.65 + instant * 0.35;
       }
       lastX = e.clientX;
-      lastT = e.timeStamp;
+      lastMoveT = e.timeStamp;
     };
 
     const onUp = (e: PointerEvent) => {
@@ -146,7 +174,7 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
       delete el.dataset.dragging;
       if (el.hasPointerCapture(pointerId)) el.releasePointerCapture(pointerId);
       // Holding still before letting go means no throw, just the drift.
-      throwWith(e.timeStamp - lastT > 90 ? 0 : dragVel);
+      throwAt(e.timeStamp - lastMoveT > 90 ? 0 : dragVel);
       // The click that follows a drag shouldn't open a card's link.
       suppressClick = true;
       setTimeout(() => {
@@ -164,32 +192,37 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
 
     // Sideways trackpad / shift-wheel scrolling moves the rail directly.
     const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      if (!anim || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
-      x = wrap(x + e.deltaX);
-      if (e.deltaX !== 0) dir = e.deltaX > 0 ? 1 : -1;
+      anim.currentTime = timeFor(currentX() + e.deltaX);
+      if (e.deltaX !== 0) {
+        dir = e.deltaX > 0 ? 1 : -1;
+        if (!settleRaf) setRate(dir);
+      }
     };
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
       e.preventDefault();
-      dir = e.key === "ArrowRight" ? 1 : -1;
-      speed = KEY_NUDGE;
+      throwAt(e.key === "ArrowRight" ? KEY_NUDGE : -KEY_NUDGE);
     };
 
     // Keyboard focus on a card link: bring that card to the left edge and
     // hold the rail still so the focused link doesn't slide away.
     const onFocusIn = (e: FocusEvent) => {
       const target = e.target as HTMLElement;
-      if (target === el || !target.matches(":focus-visible")) return;
+      if (target === el || !target.matches(":focus-visible") || !anim) return;
       keyboardFocus = true;
       const card = target.closest("article");
-      if (card) x = wrap(card.offsetLeft - 20);
+      if (card) anim.currentTime = timeFor(card.offsetLeft - 20);
+      setRate(rate);
       // Focusing can scroll an overflow:hidden box natively; undo that.
       el.scrollLeft = 0;
     };
     const onFocusOut = () => {
+      if (!keyboardFocus) return;
       keyboardFocus = false;
+      setRate(rate);
     };
 
     el.addEventListener("pointerdown", onDown);
@@ -204,7 +237,8 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
     el.addEventListener("focusout", onFocusOut);
 
     return () => {
-      stop();
+      cancelAnimationFrame(settleRaf);
+      anim?.cancel();
       io.disconnect();
       ro.disconnect();
       el.removeEventListener("pointerdown", onDown);
