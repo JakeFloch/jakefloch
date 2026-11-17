@@ -16,9 +16,12 @@ const EXPERIENCE = [
     org: "Youphoria",
     dates: "May – Aug 2025",
   },
+];
+
+const EDUCATION = [
   {
     role: "B.S. Computer Science",
-    org: "Emory University",
+    org: "Emory University · Concentration in Artificial Intelligence · Minor in Business",
     dates: "Aug 2023 – May 2027",
   },
 ];
@@ -53,28 +56,35 @@ export default function About() {
           </p>
         </Reveal>
 
-        <div className="md:col-span-6 md:col-start-7">
-          <Reveal>
-            <h3 className="label mb-2">Experience &amp; education</h3>
-          </Reveal>
-          <ul>
-            {EXPERIENCE.map((item, i) => (
-              <li key={item.role}>
-                <Reveal
-                  delay={i * 0.07}
-                  className="group flex flex-col gap-1 border-b border-line py-6 transition-[padding] duration-300 hover:pl-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-                >
-                  <div>
-                    <p className="font-display text-2xl leading-tight tracking-[-0.02em] transition-colors duration-300 group-hover:text-accent">
-                      {item.role}
-                    </p>
-                    <p className="mt-1 text-fg/60">{item.org}</p>
-                  </div>
-                  <p className="label shrink-0">{item.dates}</p>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
+        <div className="space-y-14 md:col-span-6 md:col-start-7">
+          {[
+            { title: "Experience", items: EXPERIENCE },
+            { title: "Education", items: EDUCATION },
+          ].map((group) => (
+            <div key={group.title}>
+              <Reveal>
+                <h3 className="label mb-2">{group.title}</h3>
+              </Reveal>
+              <ul>
+                {group.items.map((item, i) => (
+                  <li key={item.role}>
+                    <Reveal
+                      delay={i * 0.07}
+                      className="group flex flex-col gap-1 border-b border-line py-6 transition-[padding] duration-300 hover:pl-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                    >
+                      <div>
+                        <p className="font-display text-2xl leading-tight tracking-[-0.02em] transition-colors duration-300 group-hover:text-accent">
+                          {item.role}
+                        </p>
+                        <p className="mt-1 text-fg/60">{item.org}</p>
+                      </div>
+                      <p className="label shrink-0">{item.dates}</p>
+                    </Reveal>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </section>
