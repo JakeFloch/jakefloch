@@ -248,7 +248,9 @@ em {
 /* Custom cursor. It replaces the system pointer: once it is running the
    native cursor is hidden everywhere, so only one is ever on screen. */
 html.custom-cursor,
-html.custom-cursor * {
+html.custom-cursor *,
+html.custom-cursor *::before,
+html.custom-cursor *::after {
   cursor: none !important;
 }
 .cursor-dot {

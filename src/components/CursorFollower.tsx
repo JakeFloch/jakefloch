@@ -14,6 +14,9 @@ export default function CursorFollower() {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
     const root = document.documentElement;
+    // Hide the system pointer for as long as this component is mounted, not
+    // from the first move, so the two can never be on screen together.
+    root.classList.add("custom-cursor");
 
     const hide = () => {
       el.dataset.visible = "false";
@@ -28,7 +31,6 @@ export default function CursorFollower() {
       const onAction = !!target?.closest("a, button, [data-cursor]");
       el.dataset.state = onText ? "text" : onAction ? "active" : "idle";
       el.dataset.visible = "true";
-      root.classList.add("custom-cursor");
     };
 
     const onDown = () => {
@@ -56,6 +58,7 @@ export default function CursorFollower() {
       document.removeEventListener("pointerout", onOut);
       window.removeEventListener("blur", hide);
       root.classList.remove("custom-cursor");
+      hide();
     };
   }, []);
 
