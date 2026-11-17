@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// The site's only cursor: a white dot that inverts whatever is beneath it,
-// grows over links and buttons, and becomes a caret over text fields. The
-// system pointer is hidden while it runs (html.custom-cursor), and comes back
-// on touch devices or if this never starts.
+// The site's only cursor. A white dot that inverts whatever is beneath it,
+// grows over links and buttons, thins to a caret over text fields, and turns
+// into a labelled "drag" disc over anything marked data-cursor="drag".
+// The system pointer is hidden while this is mounted (html.custom-cursor);
+// touch devices never mount it. Only transforms and opacity are animated.
 export default function CursorFollower() {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -18,6 +19,12 @@ export default function CursorFollower() {
     // from the first move, so the two can never be on screen together.
     root.classList.add("custom-cursor");
 
+    let state = "";
+    const setState = (next: string) => {
+      if (next === state) return;
+      state = next;
+      el.dataset.state = next;
+    };
     const hide = () => {
       el.dataset.visible = "false";
     };
@@ -25,12 +32,18 @@ export default function CursorFollower() {
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       // Tracks the pointer 1:1 — any lag makes a replacement cursor feel off.
-      el.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+      el.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       const target = e.target as Element | null;
-      const onText = !!target?.closest("input, textarea");
-      const onAction = !!target?.closest("a, button, [data-cursor]");
-      el.dataset.state = onText ? "text" : onAction ? "active" : "idle";
-      el.dataset.visible = "true";
+      setState(
+        target?.closest("input, textarea")
+          ? "text"
+          : target?.closest("a, button")
+          ? "active"
+          : target?.closest('[data-cursor="drag"]')
+          ? "drag"
+          : "idle"
+      );
+      if (el.dataset.visible !== "true") el.dataset.visible = "true";
     };
 
     const onDown = () => {
@@ -62,5 +75,12 @@ export default function CursorFollower() {
     };
   }, []);
 
-  return <div ref={ref} className="cursor-dot" aria-hidden />;
+  return (
+    <div ref={ref} className="cursor" aria-hidden>
+      <span className="cursor-dot" />
+      <span className="cursor-label">
+        <span>‹</span>drag<span>›</span>
+      </span>
+    </div>
+  );
 }

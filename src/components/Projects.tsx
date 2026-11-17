@@ -184,7 +184,6 @@ export default function Projects() {
 
       {/* A slow, looping side-scroller that can be grabbed and thrown */}
       <Reveal className="mt-14 md:mt-20">
-        <p className="label mb-6 text-right">Drag to scroll</p>
         <ProjectRail sets={[cards(false), cards(true), cards(true)]} />
       </Reveal>
     </section>

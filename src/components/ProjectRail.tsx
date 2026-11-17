@@ -1,34 +1,39 @@
 "use client";
 import { useEffect, useRef, type ReactNode } from "react";
 
-const DRIFT = 28; // resting speed, px per second
-const SETTLE_MS = 900; // time constant for easing back to the resting speed
+const DRIFT = 30; // resting speed, px per second — the rail never goes slower
+const FRICTION_MS = 700; // time constant for a throw easing back to DRIFT
 const DRAG_THRESHOLD = 6; // px of movement before a press becomes a drag
-const MAX_FLING = 4000; // px per second
+const MAX_FLING = 5000; // px per second
+const KEY_NUDGE = 1100; // px per second given by an arrow key
 
-// A horizontal strip of cards that drifts left on its own and loops
-// seamlessly. `sets` are identical copies of the same cards laid end to end;
-// once a full copy has scrolled past, the position wraps by one copy.
+// A horizontal strip of cards that drifts on its own and loops seamlessly.
+// `sets` are identical copies of the same cards laid end to end; the track is
+// moved with a GPU transform and wraps by one copy's width.
 //
-// It can be grabbed with the mouse and thrown: the release velocity carries
-// on, then eases back to the resting drift (or to a stop while hovered or
-// focused). It is still an ordinary scroll container underneath, so trackpad,
-// touch and keyboard scrolling work as usual.
+// It can be grabbed and thrown. A throw sets the direction and speed, and the
+// speed then decays exponentially back to DRIFT, never to zero: the rail only
+// stands still while it is actually being held. Horizontal trackpad scrolling
+// and the arrow keys move it too.
 export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    const track = trackRef.current;
+    if (!el || !track) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const rest = reduce ? 0 : DRIFT;
 
     let raf = 0;
-    let last = performance.now();
-    let pos = el.scrollLeft; // float; scrollLeft itself may round
-    let vel = 0; // px per second, positive scrolls left
-    let visible = false;
-    let hovered = false;
-    let focused = false;
+    let running = false;
+    let last = 0;
+    let x = 0; // px scrolled, always within [0, period)
+    let dir = 1; // 1 moves the cards left, -1 right
+    let speed = rest; // px per second, never below `rest` unless held
+    let period = 0;
+    let keyboardFocus = false;
 
     // Drag state
     let pressed = false;
@@ -41,48 +46,76 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
     let dragVel = 0;
     let suppressClick = false;
 
-    const period = () => {
-      const a = el.children[0] as HTMLElement | undefined;
-      const b = el.children[1] as HTMLElement | undefined;
-      return a && b ? b.offsetLeft - a.offsetLeft : 0;
-    };
-    const wrap = (x: number) => {
-      const p = period();
-      if (p <= 0) return x;
-      return ((x % p) + p) % p;
+    const wrap = (v: number) =>
+      period > 0 ? ((v % period) + period) % period : v;
+    const render = () => {
+      track.style.transform = `translate3d(${-x}px, 0, 0)`;
     };
 
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-    });
-    io.observe(el);
+    // Layout is only read here, never inside the animation frame.
+    const measure = () => {
+      const a = track.children[0] as HTMLElement | undefined;
+      const b = track.children[1] as HTMLElement | undefined;
+      period = a && b ? b.offsetLeft - a.offsetLeft : 0;
+      x = wrap(x);
+      render();
+    };
 
     const tick = (t: number) => {
-      const dt = Math.min(64, t - last);
+      const dt = Math.min(48, t - last);
       last = t;
-
       if (!dragging) {
-        // Follow the user if they scrolled natively since the last frame.
-        if (Math.abs(el.scrollLeft - pos) > 2) pos = el.scrollLeft;
-
-        const rest = reduce || hovered || focused || !visible ? 0 : DRIFT;
-        vel += (rest - vel) * (1 - Math.exp(-dt / SETTLE_MS));
-        if (Math.abs(vel - rest) < 0.5) vel = rest;
-        pos = wrap(pos + (vel * dt) / 1000);
+        const floor = keyboardFocus ? 0 : rest;
+        speed = floor + (speed - floor) * Math.exp(-dt / FRICTION_MS);
+        if (speed - floor < 0.5) speed = floor;
+        x = wrap(x + (dir * speed * dt) / 1000);
       }
-      if (Math.abs(el.scrollLeft - pos) >= 0.5) el.scrollLeft = pos;
-
+      render();
       raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
+    const start = () => {
+      if (running) return;
+      running = true;
+      last = performance.now();
+      raf = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+
+    // Nothing runs, including the cards' own animations, while off screen.
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        delete el.dataset.offscreen;
+        start();
+      } else {
+        el.dataset.offscreen = "true";
+        stop();
+      }
+    });
+    io.observe(el);
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    measure();
+
+    const throwWith = (v: number) => {
+      const clamped = Math.max(-MAX_FLING, Math.min(MAX_FLING, v));
+      if (Math.abs(clamped) > rest) {
+        dir = clamped > 0 ? 1 : -1;
+        speed = Math.abs(clamped);
+      } else {
+        speed = rest;
+      }
+    };
 
     const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
       pressed = true;
       dragging = false;
       pointerId = e.pointerId;
       startX = lastX = e.clientX;
-      startPos = pos;
+      startPos = x;
       lastT = e.timeStamp;
       dragVel = 0;
     };
@@ -93,19 +126,19 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
       if (!dragging) {
         if (Math.abs(dx) < DRAG_THRESHOLD) return;
         dragging = true;
+        el.dataset.dragging = "true";
         try {
           el.setPointerCapture(pointerId);
         } catch {
           // Pointer already gone; the drag still works while over the rail.
         }
-        el.dataset.dragging = "true";
       }
-      pos = wrap(startPos - dx);
+      x = wrap(startPos - dx);
       // Smoothed pointer velocity, so one jittery sample can't set the throw.
       const dtMove = e.timeStamp - lastT;
       if (dtMove > 0) {
         const instant = (-(e.clientX - lastX) / dtMove) * 1000;
-        dragVel = dragVel * 0.7 + instant * 0.3;
+        dragVel = dragVel * 0.65 + instant * 0.35;
       }
       lastX = e.clientX;
       lastT = e.timeStamp;
@@ -118,9 +151,8 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
       dragging = false;
       delete el.dataset.dragging;
       if (el.hasPointerCapture(pointerId)) el.releasePointerCapture(pointerId);
-      // A pause before letting go means no throw.
-      const stale = e.timeStamp - lastT > 80;
-      vel = stale || reduce ? 0 : Math.max(-MAX_FLING, Math.min(MAX_FLING, dragVel));
+      // Holding still before letting go means no throw, just the drift.
+      throwWith(e.timeStamp - lastT > 90 ? 0 : dragVel);
       // The click that follows a drag shouldn't open a card's link.
       suppressClick = true;
       setTimeout(() => {
@@ -136,17 +168,34 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
     // Stop the browser's own link/image drag from hijacking the gesture.
     const onDragStart = (e: DragEvent) => e.preventDefault();
 
-    const onEnter = (e: PointerEvent) => {
-      if (e.pointerType === "mouse") hovered = true;
+    // Sideways trackpad / shift-wheel scrolling moves the rail directly.
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      x = wrap(x + e.deltaX);
+      if (e.deltaX !== 0) dir = e.deltaX > 0 ? 1 : -1;
     };
-    const onLeave = () => {
-      hovered = false;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      dir = e.key === "ArrowRight" ? 1 : -1;
+      speed = KEY_NUDGE;
     };
-    const onFocusIn = () => {
-      focused = true;
+
+    // Keyboard focus on a card link: bring that card to the left edge and
+    // hold the rail still so the focused link doesn't slide away.
+    const onFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target === el || !target.matches(":focus-visible")) return;
+      keyboardFocus = true;
+      const card = target.closest("article");
+      if (card) x = wrap(card.offsetLeft - 20);
+      // Focusing can scroll an overflow:hidden box natively; undo that.
+      el.scrollLeft = 0;
     };
     const onFocusOut = () => {
-      focused = false;
+      keyboardFocus = false;
     };
 
     el.addEventListener("pointerdown", onDown);
@@ -155,22 +204,23 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
     el.addEventListener("pointercancel", onUp);
     el.addEventListener("click", onClick, true);
     el.addEventListener("dragstart", onDragStart);
-    el.addEventListener("pointerenter", onEnter);
-    el.addEventListener("pointerleave", onLeave);
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("keydown", onKey);
     el.addEventListener("focusin", onFocusIn);
     el.addEventListener("focusout", onFocusOut);
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
       io.disconnect();
+      ro.disconnect();
       el.removeEventListener("pointerdown", onDown);
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerup", onUp);
       el.removeEventListener("pointercancel", onUp);
       el.removeEventListener("click", onClick, true);
       el.removeEventListener("dragstart", onDragStart);
-      el.removeEventListener("pointerenter", onEnter);
-      el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("keydown", onKey);
       el.removeEventListener("focusin", onFocusIn);
       el.removeEventListener("focusout", onFocusOut);
     };
@@ -182,18 +232,21 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
       role="region"
       aria-label="Projects"
       tabIndex={0}
-      className="rail no-scrollbar -mx-5 flex gap-5 overflow-x-auto px-5 md:-mx-10 md:px-10"
+      data-cursor="drag"
+      className="rail -mx-5 overflow-hidden px-5 md:-mx-10 md:px-10"
     >
-      {sets.map((set, i) => (
-        <div
-          key={i}
-          // Only the first copy is exposed to assistive tech.
-          aria-hidden={i > 0 ? true : undefined}
-          className="flex shrink-0 gap-5"
-        >
-          {set}
-        </div>
-      ))}
+      <div ref={trackRef} className="rail-track flex w-max gap-5">
+        {sets.map((set, i) => (
+          <div
+            key={i}
+            // Only the first copy is exposed to assistive tech.
+            aria-hidden={i > 0 ? true : undefined}
+            className="flex shrink-0 gap-5"
+          >
+            {set}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

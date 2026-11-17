@@ -208,25 +208,22 @@ em {
   animation: scan 3.2s ease-in-out infinite;
 }
 
-/* Scroll container without a visible scrollbar */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
-}
-
-/* Draggable project rail */
+/* Project rail: grabbed and thrown, moved with a transform */
 .rail {
+  touch-action: pan-y;
   cursor: grab;
-  overscroll-behavior-x: contain;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .rail[data-dragging="true"] {
   cursor: grabbing;
-  user-select: none;
+}
+.rail-track {
+  will-change: transform;
+}
+/* Card animations rest while the rail is off screen */
+.rail[data-offscreen="true"] * {
+  animation-play-state: paused !important;
 }
 
 /* Form fields */
@@ -257,43 +254,86 @@ html.custom-cursor *::before,
 html.custom-cursor *::after {
   cursor: none !important;
 }
-.cursor-dot {
+/* Positioned from JS; zero-size so its children centre on the pointer. */
+.cursor {
   position: fixed;
   left: 0;
   top: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: #fff;
+  width: 0;
+  height: 0;
   pointer-events: none;
   z-index: 100;
   opacity: 0;
   mix-blend-mode: difference;
-  transition: opacity 150ms, width 220ms var(--ease-out-soft),
-    height 220ms var(--ease-out-soft), border-radius 220ms;
+  transition: opacity 150ms;
   will-change: transform;
 }
-.cursor-dot[data-visible="true"] {
+.cursor[data-visible="true"] {
   opacity: 1;
 }
+/* One 64px disc; every state is a scale of it, so nothing re-lays out. */
+.cursor-dot {
+  position: absolute;
+  left: -32px;
+  top: -32px;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: #fff;
+  transform: scale(0.19);
+  transition: transform 220ms var(--ease-out-soft), background-color 200ms;
+}
+.cursor[data-pressed="true"] .cursor-dot {
+  transform: scale(0.13);
+}
 /* Over links and buttons: a larger disc */
-.cursor-dot[data-state="active"] {
-  width: 52px;
-  height: 52px;
+.cursor[data-state="active"] .cursor-dot {
+  transform: scale(0.82);
+}
+.cursor[data-state="active"][data-pressed="true"] .cursor-dot {
+  transform: scale(0.66);
 }
 /* Over text fields: a caret */
-.cursor-dot[data-state="text"] {
-  width: 2px;
-  height: 24px;
-  border-radius: 1px;
+.cursor[data-state="text"] .cursor-dot {
+  transform: scale(0.035, 0.4);
 }
-.cursor-dot[data-pressed="true"] {
-  width: 8px;
-  height: 8px;
+/* Over draggable areas: a solid blue disc that says so */
+.cursor[data-state="drag"] {
+  mix-blend-mode: normal;
 }
-.cursor-dot[data-state="active"][data-pressed="true"] {
-  width: 40px;
-  height: 40px;
+.cursor[data-state="drag"] .cursor-dot {
+  background: var(--color-accent);
+  transform: scale(1.15);
+}
+.cursor[data-state="drag"][data-pressed="true"] .cursor-dot {
+  transform: scale(0.95);
+}
+.cursor-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transform: translate(-50%, -50%) scale(0.6);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 150ms, transform 220ms var(--ease-out-soft),
+    gap 220ms var(--ease-out-soft);
+}
+.cursor[data-state="drag"] .cursor-label {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+/* While held, the arrows spread to show the direction of travel. */
+.cursor[data-state="drag"][data-pressed="true"] .cursor-label {
+  gap: 0.6rem;
 }
 
 /* Outlined footer wordmark */
