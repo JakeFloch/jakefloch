@@ -167,7 +167,7 @@ function cards(clone: boolean) {
 
 export default function Projects() {
   return (
-    <section id="work" className="px-5 py-28 md:px-10 md:py-44">
+    <section id="work" className="px-5 pb-6 pt-28 md:px-10 md:pb-10 md:pt-44">
       <div className="flex items-end justify-between gap-6">
         <div>
           <SectionLabel n="02">Selected work</SectionLabel>

@@ -59,7 +59,6 @@ export default function Home() {
       <footer className="overflow-hidden border-t border-line px-5 pt-8 md:px-10">
         <div className="label flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Jake Floch</p>
-          <p>Built with Next.js &amp; Tailwind CSS</p>
           <a href="#top" className="link text-fg">
             Back to top <span aria-hidden>↑</span>
           </a>

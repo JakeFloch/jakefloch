@@ -142,9 +142,6 @@ em {
   width: max-content;
   animation: marquee 38s linear infinite;
 }
-.marquee-wrap:hover .marquee {
-  animation-play-state: paused;
-}
 @keyframes marquee {
   to {
     transform: translateX(-50%);
