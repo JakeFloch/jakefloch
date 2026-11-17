@@ -27,39 +27,46 @@ export default function DotField({ className = "" }: { className?: string }) {
       mouse.y += (mouse.ty - mouse.y) * 0.14;
       ctx.clearRect(0, 0, w, h);
 
+      // Cold dots are plain squares in one fill colour; only the handful
+      // near the pointer pay for a colour string and an arc.
+      ctx.fillStyle = "#f4f4f5";
+      const near = mouse.x > -RADIUS && mouse.y > -RADIUS;
       for (let y = GAP / 2; y < h; y += GAP) {
+        const cy = Math.cos(y * 0.008 - time * 0.45);
+        const dy = y - mouse.y;
+        const rowNear = near && dy > -RADIUS && dy < RADIUS;
         for (let x = GAP / 2; x < w; x += GAP) {
-          const wave =
-            Math.sin(x * 0.006 + time * 0.7) * Math.cos(y * 0.008 - time * 0.45);
-          let alpha = 0.11 + 0.09 * wave;
-          let size = 1;
-          let px = x;
-          let py = y;
-          let hot = 0;
-
-          const dx = x - mouse.x;
-          const dy = y - mouse.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < RADIUS * RADIUS) {
-            const d = Math.sqrt(d2) || 1;
-            const f = 1 - d / RADIUS;
-            hot = f * f;
-            px += (dx / d) * hot * 16;
-            py += (dy / d) * hot * 16;
-            size += hot * 2.4;
-            alpha += hot * 0.8;
+          const alpha = 0.11 + 0.09 * Math.sin(x * 0.006 + time * 0.7) * cy;
+          if (rowNear) {
+            const dx = x - mouse.x;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < RADIUS * RADIUS) {
+              const d = Math.sqrt(d2) || 1;
+              const f = 1 - d / RADIUS;
+              const hot = f * f;
+              // white (244,244,245) -> blue (51,120,255) as the dot heats up
+              const r = Math.round(244 - 193 * hot);
+              const g = Math.round(244 - 124 * hot);
+              ctx.globalAlpha = Math.min(1, alpha + hot * 0.8);
+              ctx.fillStyle = `rgb(${r},${g},255)`;
+              ctx.beginPath();
+              ctx.arc(
+                x + (dx / d) * hot * 16,
+                y + (dy / d) * hot * 16,
+                1 + hot * 2.4,
+                0,
+                Math.PI * 2
+              );
+              ctx.fill();
+              ctx.fillStyle = "#f4f4f5";
+              continue;
+            }
           }
-
-          // white (244,244,245) -> blue (51,120,255) as the dot heats up
-          const r = Math.round(244 - 193 * hot);
-          const g = Math.round(244 - 124 * hot);
-          const b = Math.round(245 + 10 * hot);
-          ctx.fillStyle = `rgba(${r},${g},${b},${Math.min(1, alpha)})`;
-          ctx.beginPath();
-          ctx.arc(px, py, size, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.globalAlpha = alpha;
+          ctx.fillRect(x - 1, y - 1, 2, 2);
         }
       }
+      ctx.globalAlpha = 1;
     };
 
     const loop = (t: number) => {

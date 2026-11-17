@@ -72,7 +72,6 @@ export default function RootLayout({
     >
       <body className="antialiased">
         {children}
-        <div className="grain" aria-hidden />
         <CursorFollower />
         <Analytics />
         <SpeedInsights />
