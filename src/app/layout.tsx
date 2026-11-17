@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Funnel_Display, Funnel_Sans, Martian_Mono } from "next/font/google";
+import {
+  Funnel_Display,
+  Funnel_Sans,
+  Martian_Mono,
+  VT323,
+} from "next/font/google";
 import "./globals.css";
 import CursorFollower from "../components/CursorFollower";
 import { Analytics } from "@vercel/analytics/next";
@@ -18,6 +23,13 @@ const martianMono = Martian_Mono({
 const funnelDisplay = Funnel_Display({
   variable: "--font-heading",
   subsets: ["latin"],
+});
+
+// Pixel face used only inside the Invitide and Raging Gambler visuals.
+const pixel = VT323({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 const description =
@@ -68,7 +80,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${funnelSans.variable} ${martianMono.variable} ${funnelDisplay.variable}`}
+      className={`${funnelSans.variable} ${martianMono.variable} ${funnelDisplay.variable} ${pixel.variable}`}
     >
       <body className="antialiased">
         {children}

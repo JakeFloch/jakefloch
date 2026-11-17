@@ -100,6 +100,63 @@ em {
   transform: translate(3px, -3px);
 }
 
+/* Project card: square, hairline border, with corner brackets that
+   lengthen and turn blue on hover. */
+.card {
+  --bracket: rgb(255 255 255 / 0.5);
+  --bracket-size: 9px;
+  position: relative;
+  border: 1px solid var(--color-line);
+  background: var(--color-ink-2);
+}
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: var(--bracket-size);
+  height: var(--bracket-size);
+  pointer-events: none;
+  transition: width 250ms var(--ease-out-soft),
+    height 250ms var(--ease-out-soft), border-color 200ms;
+}
+.card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--bracket);
+  border-left: 1px solid var(--bracket);
+}
+.card::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 1px solid var(--bracket);
+  border-bottom: 1px solid var(--bracket);
+}
+.card:hover {
+  --bracket: var(--color-accent);
+  --bracket-size: 22px;
+}
+.card-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3rem;
+  padding: 0 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color 180ms, color 180ms;
+}
+.card-link:hover {
+  background: var(--color-fg);
+  color: var(--color-ink);
+}
+.card-link .arrow {
+  transition: transform 250ms var(--ease-out-soft);
+}
+.card-link:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
 /* Underlined text link with a sliding rule */
 .link {
   position: relative;

@@ -83,28 +83,6 @@ const PROJECTS: Project[] = [
   },
 ];
 
-function ExternalLink({
-  href,
-  children,
-  clone = false,
-}: {
-  href: string;
-  children: ReactNode;
-  clone?: boolean;
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      tabIndex={clone ? -1 : undefined}
-      className="link text-sm font-medium"
-    >
-      {children} <span aria-hidden>↗</span>
-    </a>
-  );
-}
-
 // Tech list set as a single mono line with blue slashes between items.
 function Stack({ items }: { items: string[] }) {
   return (
@@ -129,38 +107,49 @@ function Stack({ items }: { items: string[] }) {
 // One pass of the project cards. The rail repeats these to loop; repeats are
 // clones, kept out of the tab order.
 function cards(clone: boolean) {
+  const total = String(PROJECTS.length).padStart(2, "0");
   return PROJECTS.map((p, i) => (
-    <article
-      key={p.title}
-      className="group flex w-[18.5rem] shrink-0 flex-col overflow-hidden rounded-3xl border border-line bg-ink-2 transition-colors duration-300 hover:border-fg/25 sm:w-[21rem]"
-    >
-      <p.Visual />
-      <div className="flex flex-1 flex-col p-6">
-        <span className="label">
-          {String(i + 1).padStart(2, "0")} · {p.kind}
+    <article key={p.title} className="card flex w-[22rem] shrink-0 flex-col">
+      <header className="label flex h-10 items-center justify-between border-b border-line px-5">
+        <span>
+          <span className="text-accent">{String(i + 1).padStart(2, "0")}</span>
+          <span className="mx-1.5">/</span>
+          {total}
         </span>
-        <h3 className="mt-3 font-display text-2xl leading-none tracking-[-0.03em]">
+        <span>{p.kind}</span>
+      </header>
+      <p.Visual />
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-[1.75rem] leading-none tracking-[-0.035em]">
           {p.title}
         </h3>
-        <p className="mt-3 text-sm leading-relaxed text-fg/70">
+        <p className="mt-3 text-sm leading-relaxed text-fg/65">
           {p.description}
         </p>
         <div className="mt-auto pt-5">
           <Stack items={p.tech} />
         </div>
-        <div className="flex gap-6 pt-6">
-          <span className="text-accent">
-            <ExternalLink href={p.links.demo} clone={clone}>
-              {p.demoLabel ?? "Live demo"}
-            </ExternalLink>
-          </span>
-          <span className="text-fg/70">
-            <ExternalLink href={p.links.github} clone={clone}>
-              GitHub
-            </ExternalLink>
-          </span>
-        </div>
       </div>
+      <footer className="grid grid-cols-2 border-t border-line">
+        {[
+          { label: p.demoLabel ?? "Live demo", href: p.links.demo },
+          { label: "GitHub", href: p.links.github },
+        ].map((link, j) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={clone ? -1 : undefined}
+            className={`card-link ${j > 0 ? "border-l border-line" : ""}`}
+          >
+            {link.label}
+            <span aria-hidden className="arrow">
+              ↗
+            </span>
+          </a>
+        ))}
+      </footer>
     </article>
   ));
 }
