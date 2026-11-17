@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
-import HarnessDemo from "./HarnessDemo";
 import ProjectRail from "./ProjectRail";
 import {
   CornucopiaVisual,
   GalleryBoardVisual,
+  HarnessVisual,
   InvitideVisual,
   RagingGamblerVisual,
 } from "./ProjectVisuals";
@@ -16,9 +16,23 @@ type Project = {
   tech: string[];
   Visual: () => ReactNode;
   links: { demo: string; github: string };
+  demoLabel?: string;
 };
 
 const PROJECTS: Project[] = [
+  {
+    title: "Harness",
+    kind: "Emory Hacks · 2026",
+    description:
+      "Watches what Claude Code and Codex do on your computer, including what their own windows don't show. Scores the risk out of 100 and can pause an agent before an install script takes your secrets. Built with a team of three.",
+    tech: ["Node.js", "JavaScript", "Tauri 2", "Rust", "Claude Code hooks"],
+    Visual: HarnessVisual,
+    links: {
+      demo: "https://devpost.com/software/harness-1rhedk",
+      github: "https://github.com/alexlautin/harness",
+    },
+    demoLabel: "Devpost",
+  },
   {
     title: "Cornucopia",
     kind: "Mobile app",
@@ -123,7 +137,7 @@ function cards(clone: boolean) {
       <p.Visual />
       <div className="flex flex-1 flex-col p-6">
         <span className="label">
-          {String(i + 2).padStart(2, "0")} · {p.kind}
+          {String(i + 1).padStart(2, "0")} · {p.kind}
         </span>
         <h3 className="mt-3 font-display text-2xl leading-none tracking-[-0.03em]">
           {p.title}
@@ -131,13 +145,13 @@ function cards(clone: boolean) {
         <p className="mt-3 text-sm leading-relaxed text-fg/70">
           {p.description}
         </p>
-        <div className="mt-5">
+        <div className="mt-auto pt-5">
           <Stack items={p.tech} />
         </div>
-        <div className="mt-auto flex gap-6 pt-6">
+        <div className="flex gap-6 pt-6">
           <span className="text-accent">
             <ExternalLink href={p.links.demo} clone={clone}>
-              Live demo
+              {p.demoLabel ?? "Live demo"}
             </ExternalLink>
           </span>
           <span className="text-fg/70">
@@ -164,83 +178,13 @@ export default function Projects() {
           </Reveal>
         </div>
         <p className="label hidden pb-3 md:block">
-          ({String(PROJECTS.length + 1).padStart(2, "0")})
+          ({String(PROJECTS.length).padStart(2, "0")})
         </p>
       </div>
 
-      {/* Featured: Harness */}
+      {/* A slow, looping side-scroller that can be grabbed and thrown */}
       <Reveal className="mt-14 md:mt-20">
-        <article
-          className="grid overflow-hidden rounded-3xl border border-line bg-ink-2 transition-colors duration-300 hover:border-fg/25 lg:grid-cols-2"
-        >
-          <div className="relative z-10 flex flex-col p-7 md:p-12">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="chip !border-accent/50 !text-accent">Latest</span>
-              <span className="chip">Emory Hacks · Nov 2026</span>
-            </div>
-            <h3 className="mt-8 font-display text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] tracking-[-0.04em]">
-              Harness
-            </h3>
-            <p className="label mt-3">A local monitor for AI coding agents</p>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-fg/75">
-              Harness watches what Claude Code and Codex do on your computer,
-              including the parts their own windows don&apos;t show. It follows
-              every process, file, and connection an agent starts, turns it
-              into a safety score out of 100, and can pause the agent before a
-              malicious install script walks off with your secrets. Runs
-              entirely locally as a macOS menu bar and Windows tray app. Built
-              with a team of three.
-            </p>
-            <div className="mt-8 max-w-xl">
-              <Stack
-                items={[
-                  "Node.js",
-                  "JavaScript",
-                  "Tauri 2",
-                  "Rust",
-                  "Claude Code hooks",
-                  "Next.js",
-                ]}
-              />
-            </div>
-            <div className="mt-auto flex flex-wrap gap-3 pt-10">
-              <a
-                href="https://devpost.com/software/harness-1rhedk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-solid"
-              >
-                View on Devpost <span className="arrow">↗</span>
-              </a>
-              <a
-                href="https://github.com/alexlautin/harness"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-line"
-              >
-                GitHub <span className="arrow">↗</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="relative flex min-h-[26rem] items-center justify-center overflow-hidden border-t border-line p-6 md:p-12 lg:border-l lg:border-t-0">
-            <div
-              aria-hidden
-              className="absolute inset-0 visual-grid"
-            />
-            <div className="relative z-10 flex w-full justify-center">
-              <HarnessDemo />
-            </div>
-          </div>
-        </article>
-      </Reveal>
-
-      {/* The rest: a slow, looping side-scroller */}
-      <Reveal className="mt-16 md:mt-24">
-        <div className="mb-6 flex items-center justify-between">
-          <p className="label">More projects</p>
-          <p className="label">Drag to scroll</p>
-        </div>
+        <p className="label mb-6 text-right">Drag to scroll</p>
         <ProjectRail sets={[cards(false), cards(true), cards(true)]} />
       </Reveal>
     </section>

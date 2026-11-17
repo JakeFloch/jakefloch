@@ -180,7 +180,7 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
     <div
       ref={ref}
       role="region"
-      aria-label="More projects"
+      aria-label="Projects"
       tabIndex={0}
       className="rail no-scrollbar -mx-5 flex gap-5 overflow-x-auto px-5 md:-mx-10 md:px-10"
     >

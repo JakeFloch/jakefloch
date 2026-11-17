@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import HarnessDemo from "./HarnessDemo";
 
 // Illustrative, code-drawn stand-ins for each project's interface. They are
 // sketches of what the product does, not screenshots.
@@ -14,6 +15,17 @@ function Frame({ children }: { children: ReactNode }) {
         {children}
       </div>
     </div>
+  );
+}
+
+// Harness: a replay of its demo attack, shrunk to fit the card.
+export function HarnessVisual() {
+  return (
+    <Frame>
+      <div className="w-[26rem] scale-[0.6]">
+        <HarnessDemo />
+      </div>
+    </Frame>
   );
 }
 
