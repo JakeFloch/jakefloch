@@ -29,11 +29,7 @@ export default function CursorFollower() {
       el.dataset.visible = "false";
     };
 
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      // Tracks the pointer 1:1 — any lag makes a replacement cursor feel off.
-      el.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-      const target = e.target as Element | null;
+    const classify = (target: Element | null) =>
       setState(
         target?.closest("input, textarea")
           ? "text"
@@ -43,7 +39,28 @@ export default function CursorFollower() {
           ? "drag"
           : "idle"
       );
+
+    let px = -1;
+    let py = -1;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      px = e.clientX;
+      py = e.clientY;
+      // Tracks the pointer 1:1 — any lag makes a replacement cursor feel off.
+      el.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+      classify(e.target as Element | null);
       if (el.dataset.visible !== "true") el.dataset.visible = "true";
+    };
+
+    // Scrolling moves the page under a still pointer; re-check what's there
+    // so the cursor doesn't keep the shape of something that scrolled away.
+    let scrollFrame = 0;
+    const onScroll = () => {
+      if (scrollFrame || px < 0) return;
+      scrollFrame = requestAnimationFrame(() => {
+        scrollFrame = 0;
+        classify(document.elementFromPoint(px, py));
+      });
     };
 
     const onDown = () => {
@@ -60,12 +77,15 @@ export default function CursorFollower() {
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
     window.addEventListener("pointerup", onUp, { passive: true });
     document.addEventListener("pointerout", onOut);
     window.addEventListener("blur", hide);
     return () => {
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(scrollFrame);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
       document.removeEventListener("pointerout", onOut);
