@@ -29,7 +29,15 @@ export default function Nav() {
       if (el) io.observe(el);
     });
 
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    // Only touch React state when the value actually flips.
+    let wasScrolled: boolean | null = null;
+    const onScroll = () => {
+      const now = window.scrollY > 24;
+      if (now !== wasScrolled) {
+        wasScrolled = now;
+        setScrolled(now);
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
@@ -42,7 +50,7 @@ export default function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? "border-b border-line bg-ink/90 backdrop-blur-sm"
+          ? "border-b border-line bg-ink/95"
           : "border-b border-transparent"
       }`}
     >

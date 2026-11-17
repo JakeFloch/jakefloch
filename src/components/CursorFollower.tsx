@@ -52,15 +52,17 @@ export default function CursorFollower() {
       if (el.dataset.visible !== "true") el.dataset.visible = "true";
     };
 
-    // Scrolling moves the page under a still pointer; re-check what's there
+    // Scrolling moves the page under a still pointer. Re-check what is there
+    // once scrolling settles (not every frame: a hit-test per frame is costly),
     // so the cursor doesn't keep the shape of something that scrolled away.
-    let scrollFrame = 0;
+    let settle = 0;
+    const recheck = () => {
+      settle = 0;
+      if (px >= 0) classify(document.elementFromPoint(px, py));
+    };
     const onScroll = () => {
-      if (scrollFrame || px < 0) return;
-      scrollFrame = requestAnimationFrame(() => {
-        scrollFrame = 0;
-        classify(document.elementFromPoint(px, py));
-      });
+      clearTimeout(settle);
+      settle = window.setTimeout(recheck, 120);
     };
 
     const onDown = () => {
@@ -85,7 +87,7 @@ export default function CursorFollower() {
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(scrollFrame);
+      clearTimeout(settle);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
       document.removeEventListener("pointerout", onOut);

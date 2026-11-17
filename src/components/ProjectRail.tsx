@@ -84,16 +84,10 @@ export default function ProjectRail({ sets }: { sets: ReactNode[] }) {
       cancelAnimationFrame(raf);
     };
 
-    // Nothing runs, including the cards' own animations, while off screen.
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        delete el.dataset.offscreen;
-        start();
-      } else {
-        el.dataset.offscreen = "true";
-        stop();
-      }
-    });
+    // The loop only runs while the rail is on screen.
+    const io = new IntersectionObserver(([entry]) =>
+      entry.isIntersecting ? start() : stop()
+    );
     io.observe(el);
     const ro = new ResizeObserver(measure);
     ro.observe(track);
