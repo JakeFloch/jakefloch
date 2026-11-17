@@ -91,6 +91,27 @@ function ExternalLink({
   );
 }
 
+// Tech list set as a single mono line with blue slashes between items.
+function Stack({ items }: { items: string[] }) {
+  return (
+    <div className="border-t border-line pt-4">
+      <p className="label">Stack</p>
+      <ul className="mt-2 flex flex-wrap gap-y-1 font-mono text-[11px] leading-relaxed text-fg/85">
+        {items.map((item, i) => (
+          <li key={item} className="flex items-center whitespace-nowrap">
+            {item}
+            {i < items.length - 1 && (
+              <span aria-hidden className="mx-2 text-accent">
+                /
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 // One pass of the project cards. The rail repeats these to loop; repeats are
 // clones, kept out of the tab order.
 function cards(clone: boolean) {
@@ -110,12 +131,8 @@ function cards(clone: boolean) {
         <p className="mt-3 text-sm leading-relaxed text-fg/70">
           {p.description}
         </p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {p.tech.map((t) => (
-            <span key={t} className="chip">
-              {t}
-            </span>
-          ))}
+        <div className="mt-5">
+          <Stack items={p.tech} />
         </div>
         <div className="mt-auto flex gap-6 pt-6">
           <span className="text-accent">
@@ -174,14 +191,17 @@ export default function Projects() {
               entirely locally as a macOS menu bar and Windows tray app. Built
               with a team of three.
             </p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              {["Node.js", "JavaScript", "Tauri 2", "Rust", "Claude Code hooks", "Next.js"].map(
-                (t) => (
-                  <span key={t} className="chip">
-                    {t}
-                  </span>
-                )
-              )}
+            <div className="mt-8 max-w-xl">
+              <Stack
+                items={[
+                  "Node.js",
+                  "JavaScript",
+                  "Tauri 2",
+                  "Rust",
+                  "Claude Code hooks",
+                  "Next.js",
+                ]}
+              />
             </div>
             <div className="mt-auto flex flex-wrap gap-3 pt-10">
               <a
