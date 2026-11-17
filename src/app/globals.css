@@ -157,6 +157,15 @@ em {
   transform: translate(2px, -2px);
 }
 
+/* Words in the About statement, lit as the paragraph scrolls past */
+.scroll-word {
+  opacity: 0.16;
+  transition: opacity 350ms ease-out;
+}
+.scroll-word[data-lit="true"] {
+  opacity: 1;
+}
+
 /* Underlined text link with a sliding rule */
 .link {
   position: relative;
@@ -195,11 +204,16 @@ em {
 }
 
 /* Backdrop shared by the project visuals: faint grid fading to the edges */
+/* (A radial ink overlay rather than a mask: masks are costly to composite.) */
 .visual-grid {
-  background-image: linear-gradient(var(--color-line) 1px, transparent 1px),
+  background-image: radial-gradient(
+      circle at center,
+      transparent,
+      var(--color-ink) 78%
+    ),
+    linear-gradient(var(--color-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
-  background-size: 36px 36px;
-  mask-image: radial-gradient(circle at center, black, transparent 78%);
+  background-size: 100% 100%, 36px 36px, 36px 36px;
 }
 
 /* Project rail: grabbed and thrown, moved with a transform */
@@ -257,8 +271,10 @@ html.custom-cursor *::after {
   transition: opacity 150ms;
   will-change: transform;
 }
+/* Appear at once when the pointer enters; only fade on the way out. */
 .cursor[data-visible="true"] {
   opacity: 1;
+  transition: none;
 }
 /* One 64px disc; every state is a scale of it, so nothing re-lays out. */
 .cursor-dot {

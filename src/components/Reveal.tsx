@@ -1,11 +1,6 @@
 "use client";
-import { useRef, type ReactNode } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "motion/react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
 
 const EASE = [0.2, 0.7, 0.2, 1] as const;
 
@@ -42,30 +37,11 @@ export function SectionLabel({ n, children }: { n: string; children: ReactNode }
   );
 }
 
-function Word({
-  children,
-  progress,
-  range,
-  accent,
-}: {
-  children: string;
-  progress: MotionValue<number>;
-  range: [number, number];
-  accent: boolean;
-}) {
-  const opacity = useTransform(progress, range, [0.16, 1]);
-  return (
-    <motion.span
-      style={{ opacity }}
-      className={accent ? "text-accent" : undefined}
-    >
-      {children}{" "}
-    </motion.span>
-  );
-}
-
 // A paragraph whose words light up one by one as it scrolls through the
 // viewport. The last `accentWords` words are set in the accent colour.
+//
+// Words switch on and off in steps with a short CSS fade, and the DOM is only
+// touched when the number of lit words changes — not on every scroll frame.
 export function ScrollWords({
   text,
   accentWords = 0,
@@ -76,22 +52,39 @@ export function ScrollWords({
   className?: string;
 }) {
   const ref = useRef<HTMLParagraphElement | null>(null);
+  const lit = useRef(-1);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.9", "end 0.55"],
   });
   const words = text.split(" ");
+
+  const paint = (p: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const n = Math.round(p * words.length);
+    if (n === lit.current) return;
+    const spans = el.children;
+    const lo = Math.max(0, Math.min(n, lit.current));
+    const hi = Math.max(n, lit.current);
+    for (let i = lit.current < 0 ? 0 : lo; i < (lit.current < 0 ? spans.length : hi); i++) {
+      (spans[i] as HTMLElement).dataset.lit = i < n ? "true" : "false";
+    }
+    lit.current = n;
+  };
+  useMotionValueEvent(scrollYProgress, "change", paint);
+  useEffect(() => paint(scrollYProgress.get()));
+
   return (
     <p ref={ref} className={className}>
       {words.map((word, i) => (
-        <Word
+        <span
           key={i}
-          progress={scrollYProgress}
-          range={[i / words.length, (i + 1) / words.length]}
-          accent={i >= words.length - accentWords}
+          data-lit="false"
+          className={`scroll-word ${i >= words.length - accentWords ? "text-accent" : ""}`}
         >
-          {word}
-        </Word>
+          {word}{" "}
+        </span>
       ))}
     </p>
   );

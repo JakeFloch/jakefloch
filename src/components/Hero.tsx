@@ -46,7 +46,7 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-svh flex-col justify-end overflow-hidden px-5 pb-8 pt-24 md:px-10 md:pb-10"
     >
-      <DotField className="absolute inset-0 h-full w-full [mask-image:linear-gradient(to_bottom,black_55%,transparent)]" />
+      <DotField className="absolute inset-0 h-full w-full" />
 
       <div className="relative">
         <motion.div

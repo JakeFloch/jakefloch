@@ -19,31 +19,43 @@ export default function DotField({ className = "" }: { className?: string }) {
       h = 0,
       raf = 0,
       running = false;
-    const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999 };
+    // Pointer position in canvas px, eased toward the target, and an
+    // intensity that fades the effect in when the pointer arrives and out
+    // when it leaves. On arrival the position snaps, so the glow appears
+    // under the pointer instead of sweeping in from where it last left.
+    const mouse = { x: 0, y: 0, tx: 0, ty: 0, k: 0, on: 0 };
+    let pageLeft = 0;
+    let pageTop = 0;
 
     const draw = (t: number) => {
       const time = t / 1000;
-      mouse.x += (mouse.tx - mouse.x) * 0.14;
-      mouse.y += (mouse.ty - mouse.y) * 0.14;
+      mouse.x += (mouse.tx - mouse.x) * 0.35;
+      mouse.y += (mouse.ty - mouse.y) * 0.35;
+      mouse.k += (mouse.on - mouse.k) * 0.12;
+      if (mouse.k < 0.01) mouse.k = 0;
       ctx.clearRect(0, 0, w, h);
 
       // Cold dots are plain squares in one fill colour; only the handful
       // near the pointer pay for a colour string and an arc.
       ctx.fillStyle = "#f4f4f5";
-      const near = mouse.x > -RADIUS && mouse.y > -RADIUS;
+      const near = mouse.k > 0;
       for (let y = GAP / 2; y < h; y += GAP) {
+        // Fade toward the bottom edge (was a CSS mask, which is costly).
+        const fade = Math.min(1, Math.max(0, (h - y) / (h * 0.45)));
+        if (fade === 0) break;
         const cy = Math.cos(y * 0.008 - time * 0.45);
         const dy = y - mouse.y;
         const rowNear = near && dy > -RADIUS && dy < RADIUS;
         for (let x = GAP / 2; x < w; x += GAP) {
-          const alpha = 0.11 + 0.09 * Math.sin(x * 0.006 + time * 0.7) * cy;
+          const alpha =
+            (0.11 + 0.09 * Math.sin(x * 0.006 + time * 0.7) * cy) * fade;
           if (rowNear) {
             const dx = x - mouse.x;
             const d2 = dx * dx + dy * dy;
             if (d2 < RADIUS * RADIUS) {
               const d = Math.sqrt(d2) || 1;
               const f = 1 - d / RADIUS;
-              const hot = f * f;
+              const hot = f * f * mouse.k;
               // white (244,244,245) -> blue (51,120,255) as the dot heats up
               const r = Math.round(244 - 193 * hot);
               const g = Math.round(244 - 124 * hot);
@@ -88,20 +100,27 @@ export default function DotField({ className = "" }: { className?: string }) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = rect.width;
       h = rect.height;
+      pageLeft = rect.left + window.scrollX;
+      pageTop = rect.top + window.scrollY;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (!running) draw(0);
     };
 
+    // Canvas position is cached on resize so pointer moves never force a
+    // layout read.
     const onMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.tx = e.clientX - rect.left;
-      mouse.ty = e.clientY - rect.top;
+      mouse.tx = e.clientX - (pageLeft - window.scrollX);
+      mouse.ty = e.clientY - (pageTop - window.scrollY);
+      if (mouse.k === 0) {
+        mouse.x = mouse.tx;
+        mouse.y = mouse.ty;
+      }
+      mouse.on = 1;
     };
     const onLeave = () => {
-      mouse.tx = -9999;
-      mouse.ty = -9999;
+      mouse.on = 0;
     };
     const onOut = (e: PointerEvent) => {
       if (!e.relatedTarget) onLeave();
