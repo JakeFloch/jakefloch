@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 
 // Code-drawn recreations of each project's real interface, using the layout,
@@ -114,7 +114,14 @@ export function HarnessVisual() {
             </div>
             <div className="mb-1 flex items-center gap-2 px-2">
               <span className="relative h-5 w-5">
-                <Image src="/harness-pug.png" alt="" fill sizes="20px" className="object-contain" />
+                <Image
+                  src="/harness-pug.png"
+                  alt=""
+                  fill
+                  sizes="20px"
+                  loading="eager"
+                  className="object-contain"
+                />
               </span>
               <span className="flex-1 text-[13px] font-semibold">Harness</span>
               <span className="h-[7px] w-[7px] rounded-full" style={{ background: H.green }} />
@@ -379,6 +386,9 @@ const SHOTS = [
 ];
 
 export function RagingGamblerVisual() {
+  // The rail renders every card three times, so the pattern needs an id that's
+  // unique per copy. useId's output has characters url(#...) doesn't accept.
+  const carpet = `rg-carpet-${useId().replace(/[^\w-]/g, "")}`;
   return (
     <Frame className="bg-[#4a0f1b]">
       <svg
@@ -387,7 +397,7 @@ export function RagingGamblerVisual() {
         className="absolute inset-0 h-full w-full"
       >
         <defs>
-          <pattern id="rg-carpet" width="16" height="16" patternUnits="userSpaceOnUse">
+          <pattern id={carpet} width="16" height="16" patternUnits="userSpaceOnUse">
             <rect width="16" height="16" fill="#5a1422" />
             <rect width="8" height="8" fill="#661828" />
             <rect x="8" y="8" width="8" height="8" fill="#661828" />
@@ -396,7 +406,7 @@ export function RagingGamblerVisual() {
           </pattern>
         </defs>
         <g shapeRendering="crispEdges">
-          <rect width="176" height="110" fill="url(#rg-carpet)" />
+          <rect width="176" height="110" fill={`url(#${carpet})`} />
           {/* Back wall with gold trim */}
           <rect width="176" height="15" fill="#1c0a10" />
           <rect y="15" width="176" height="2" fill="#d4a72c" />
@@ -544,6 +554,7 @@ export function InvitideVisual() {
                 alt=""
                 fill
                 sizes="84px"
+                loading="eager"
                 className="object-contain"
               />
             </div>
