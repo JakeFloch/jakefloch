@@ -1,13 +1,5 @@
 import { Reveal, SectionLabel } from "./Reveal";
-
-const SOCIALS = [
-  { label: "GitHub", handle: "JakeFloch", href: "https://github.com/JakeFloch" },
-  {
-    label: "LinkedIn",
-    handle: "jake-floch",
-    href: "https://www.linkedin.com/in/jake-floch/",
-  },
-];
+import { SOCIALS } from "./SocialIcons";
 
 export default function Contact() {
   return (
@@ -35,9 +27,10 @@ export default function Contact() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-baseline justify-between border-b border-line py-5 transition-[padding] duration-300 hover:pl-3"
+                    className="group flex items-center justify-between border-b border-line py-5 transition-[padding] duration-300 hover:pl-3"
                   >
-                    <span className="font-display text-2xl tracking-[-0.02em] transition-colors duration-300 group-hover:text-accent">
+                    <span className="flex items-center gap-3 font-display text-2xl tracking-[-0.02em] transition-colors duration-300 group-hover:text-accent">
+                      <s.Icon className="h-5 w-5 shrink-0" />
                       {s.label}
                     </span>
                     <span className="label flex items-center gap-2">

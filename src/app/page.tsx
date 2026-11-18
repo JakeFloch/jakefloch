@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
+import { SOCIALS } from "@/components/SocialIcons";
 
 const STACK = [
   "Python",
@@ -59,9 +60,23 @@ export default function Home() {
       <footer className="overflow-hidden border-t border-line px-5 pt-8 md:px-10">
         <div className="label flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Jake Floch</p>
-          <a href="#top" className="link text-fg">
-            Back to top <span aria-hidden>↑</span>
-          </a>
+          <div className="flex items-center gap-6">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="text-dim transition-colors duration-300 hover:text-fg"
+              >
+                <s.Icon className="h-4 w-4" />
+              </a>
+            ))}
+            <a href="#top" className="link text-fg">
+              Back to top <span aria-hidden>↑</span>
+            </a>
+          </div>
         </div>
         <p
           aria-hidden
