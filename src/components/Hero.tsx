@@ -67,7 +67,7 @@ export default function Hero() {
         <div className="mt-6 flex flex-col gap-6 border-t border-line pt-6 md:mt-4 md:flex-row md:items-center md:justify-between">
           <motion.div
             {...fade(0.9)}
-            className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-dim"
+            className="flex flex-wrap items-center gap-x-8 gap-y-1 text-base text-fg/60 md:text-xl"
           >
             <span className="flex items-center gap-2 text-fg">
               <span className="relative flex h-2 w-2">
