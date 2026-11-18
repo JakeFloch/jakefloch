@@ -42,8 +42,8 @@ export default function About() {
 
       <div className="mt-20 grid gap-16 md:mt-28 md:grid-cols-12 md:gap-10">
         <Reveal className="md:col-span-5">
-          <div className="max-w-[46ch] space-y-5 text-lg leading-relaxed text-fg/70 md:sticky md:top-28">
-            <p className="text-xl leading-snug text-fg md:text-2xl">
+          <div className="max-w-[44rem] space-y-5 text-lg leading-relaxed text-fg/70 md:sticky md:top-28 md:text-[clamp(1.05rem,1.15vw,1.35rem)]">
+            <p className="text-xl leading-snug text-fg md:text-[clamp(1.5rem,2vw,2.4rem)] md:leading-[1.25]">
               I build data pipelines, AI tooling, and full-stack products. I
               like the problem-solving side of engineering, and the part where
               something I built actually gets used.
@@ -61,7 +61,7 @@ export default function About() {
           </div>
         </Reveal>
 
-        <div className="space-y-14 md:col-span-6 md:col-start-7">
+        <div className="space-y-14 md:col-span-7 md:col-start-6">
           {[
             { title: "Experience", items: EXPERIENCE },
             { title: "Education", items: EDUCATION },
