@@ -49,21 +49,6 @@ export default function Hero() {
       <DotField className="absolute inset-0 h-full w-full" />
 
       <div className="relative">
-        <motion.div
-          {...fade(0.1)}
-          className="label mb-4 flex flex-wrap items-center gap-x-8 gap-y-2 md:mb-2"
-        >
-          <span className="flex items-center gap-2 text-fg">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            Software Engineer
-          </span>
-          <span>Emory University · Atlanta, GA</span>
-          <span>Class of 2027</span>
-        </motion.div>
-
         <h1
           aria-label="Jake Floch"
           className="font-display text-[clamp(5rem,31vw,12rem)] leading-[0.82] tracking-[-0.055em] md:text-[clamp(7rem,20.5vw,24rem)]"
@@ -79,19 +64,22 @@ export default function Hero() {
           />
         </h1>
 
-        <div className="mt-6 grid gap-8 border-t border-line pt-6 md:mt-4 md:grid-cols-12 md:items-end">
-          <motion.p
-            {...fade(0.9)}
-            className="max-w-xl text-lg leading-relaxed text-fg/80 md:col-span-6 md:text-xl"
-          >
-            I build data pipelines, AI tooling, and full-stack products.
-            Computer Science at Emory with a concentration in AI and a minor
-            in Business.
-          </motion.p>
+        <div className="mt-6 flex flex-col gap-6 border-t border-line pt-6 md:mt-4 md:flex-row md:items-center md:justify-between">
           <motion.div
-            {...fade(1.05)}
-            className="flex flex-wrap gap-3 md:col-span-6 md:justify-end"
+            {...fade(0.9)}
+            className="label flex flex-wrap items-center gap-x-8 gap-y-2"
           >
+            <span className="flex items-center gap-2 text-fg">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+              </span>
+              Software Engineer
+            </span>
+            <span>Emory University · Atlanta, GA</span>
+            <span>Class of 2027</span>
+          </motion.div>
+          <motion.div {...fade(1.05)} className="flex flex-wrap gap-3">
             <a href="#work" className="btn btn-solid">
               View work <span className="arrow">↗</span>
             </a>

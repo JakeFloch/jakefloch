@@ -1,6 +1,8 @@
 import { Reveal, ScrollWords, SectionLabel } from "./Reveal";
 
-const EXPERIENCE = [
+type Entry = { role: string; org: string; detail?: string; dates: string };
+
+const EXPERIENCE: Entry[] = [
   {
     role: "Data Engineer Intern",
     org: "Expedia Group · Global Payments",
@@ -18,10 +20,11 @@ const EXPERIENCE = [
   },
 ];
 
-const EDUCATION = [
+const EDUCATION: Entry[] = [
   {
     role: "B.S. Computer Science",
-    org: "Emory University · Concentration in Artificial Intelligence · Minor in Business",
+    org: "Emory University",
+    detail: "Concentration in Artificial Intelligence · Minor in Business",
     dates: "Aug 2023 – May 2027",
   },
 ];
@@ -38,22 +41,24 @@ export default function About() {
       />
 
       <div className="mt-20 grid gap-16 md:mt-28 md:grid-cols-12 md:gap-10">
-        <Reveal className="space-y-6 text-lg leading-relaxed text-fg/75 md:col-span-5">
-          <p>
-            I like the problem-solving side of engineering, and the part where
-            something I built actually gets used.
-          </p>
-          <p>
-            This past summer I interned on Expedia Group&apos;s Global Payments
-            team, where I built an AI-powered regression testing framework for
-            payment data at billion-row scale.
-          </p>
-          <p>
-            Before that I spent ten months as a research assistant at
-            Emory&apos;s School of Nursing, building Python and OpenCV pipelines
-            that turned thermal and tissue-oximetry imaging into training-ready
-            datasets for the lab&apos;s CNN models.
-          </p>
+        <Reveal className="md:col-span-5">
+          <div className="max-w-[46ch] space-y-5 text-lg leading-relaxed text-fg/70 md:sticky md:top-28">
+            <p className="text-xl leading-snug text-fg md:text-2xl">
+              I build data pipelines, AI tooling, and full-stack products. I
+              like the problem-solving side of engineering, and the part where
+              something I built actually gets used.
+            </p>
+            <p>
+              At Expedia I built an AI-powered regression testing framework for
+              payment data at billion-row scale.
+            </p>
+            <p>
+              Before that I spent ten months as a research assistant at
+              Emory&apos;s School of Nursing, building Python and OpenCV
+              pipelines that turned thermal and tissue-oximetry imaging into
+              training-ready datasets for the lab&apos;s CNN models.
+            </p>
+          </div>
         </Reveal>
 
         <div className="space-y-14 md:col-span-6 md:col-start-7">
@@ -77,6 +82,9 @@ export default function About() {
                           {item.role}
                         </p>
                         <p className="mt-1 text-fg/60">{item.org}</p>
+                        {item.detail && (
+                          <p className="mt-1 text-sm text-fg/45">{item.detail}</p>
+                        )}
                       </div>
                       <p className="label shrink-0">{item.dates}</p>
                     </Reveal>
