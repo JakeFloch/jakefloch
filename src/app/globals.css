@@ -307,41 +307,47 @@ html.custom-cursor *::after {
 .cursor[data-state="text"] .cursor-dot {
   transform: scale(0.035, 0.4);
 }
-/* Over draggable areas: a solid blue disc that says so */
+/* Over draggable areas: the dot stays, and a chevron slides out on each side
+   to say "this moves sideways". Holding pulls them in toward the dot. */
 .cursor[data-state="drag"] .cursor-dot {
-  background: var(--color-accent);
-  box-shadow: none;
-  transform: scale(1.15);
+  transform: scale(0.16);
 }
 .cursor[data-state="drag"][data-pressed="true"] .cursor-dot {
-  transform: scale(0.95);
+  transform: scale(0.12);
 }
-.cursor-label {
+.cursor-arrow {
   position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  transform: translate(-50%, -50%) scale(0.6);
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  top: -6px;
+  width: 12px;
+  height: 12px;
   color: #fff;
+  /* Same dark edge as the dot, so the arrows read over light previews. */
+  filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.7)) drop-shadow(0 0 2px rgb(0 0 0 / 0.35));
   opacity: 0;
-  transition: opacity 150ms, transform 220ms var(--ease-out-soft),
-    gap 220ms var(--ease-out-soft);
+  transition: opacity 150ms, transform 260ms var(--ease-out-soft);
 }
-.cursor[data-state="drag"] .cursor-label {
+.cursor-arrow-l {
+  left: -6px;
+  transform: translateX(-4px);
+}
+.cursor-arrow-r {
+  left: -6px;
+  transform: translateX(4px);
+}
+.cursor[data-state="drag"] .cursor-arrow {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
 }
-/* While held, the arrows spread to show the direction of travel. */
-.cursor[data-state="drag"][data-pressed="true"] .cursor-label {
-  gap: 0.6rem;
+.cursor[data-state="drag"] .cursor-arrow-l {
+  transform: translateX(-17px);
+}
+.cursor[data-state="drag"] .cursor-arrow-r {
+  transform: translateX(17px);
+}
+.cursor[data-state="drag"][data-pressed="true"] .cursor-arrow-l {
+  transform: translateX(-12px);
+}
+.cursor[data-state="drag"][data-pressed="true"] .cursor-arrow-r {
+  transform: translateX(12px);
 }
 
 /* Outlined footer wordmark */

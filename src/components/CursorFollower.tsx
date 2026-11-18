@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// The site's only cursor. A white dot that inverts whatever is beneath it,
-// grows over links and buttons, thins to a caret over text fields, and turns
-// into a labelled "drag" disc over anything marked data-cursor="drag".
+// The site's only cursor. A white dot that grows over links and buttons, thins
+// to a caret over text fields, and gains a chevron on each side over anything
+// marked data-cursor="drag".
 // The system pointer is hidden while this is mounted (html.custom-cursor);
 // touch devices never mount it. Only transforms and opacity are animated.
 export default function CursorFollower() {
@@ -100,9 +100,12 @@ export default function CursorFollower() {
   return (
     <div ref={ref} className="cursor" aria-hidden>
       <span className="cursor-dot" />
-      <span className="cursor-label">
-        <span>‹</span>drag<span>›</span>
-      </span>
+      <svg className="cursor-arrow cursor-arrow-l" viewBox="0 0 12 12" fill="none">
+        <path d="M7.5 2.5 4 6l3.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <svg className="cursor-arrow cursor-arrow-r" viewBox="0 0 12 12" fill="none">
+        <path d="M4.5 2.5 8 6 4.5 9.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
     </div>
   );
 }
