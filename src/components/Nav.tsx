@@ -70,7 +70,7 @@ export default function Nav() {
               <a
                 href={`#${id}`}
                 aria-current={active === id ? "true" : undefined}
-                className={`relative block rounded-full px-3 py-2 font-mono text-[11px] uppercase tracking-[0.16em] transition-colors md:px-4 ${
+                className={`relative block rounded-full px-3 py-1.5 text-sm transition-colors md:px-4 ${
                   active === id ? "text-fg" : "text-dim hover:text-fg"
                 }`}
               >

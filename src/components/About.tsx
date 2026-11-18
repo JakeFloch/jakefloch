@@ -31,16 +31,16 @@ const EDUCATION: Entry[] = [
 
 export default function About() {
   return (
-    <section id="about" className="px-5 py-28 md:px-10 md:py-44">
-      <SectionLabel n="01">About</SectionLabel>
+    <section id="about" className="px-5 py-20 md:px-10 md:py-28">
+      <SectionLabel>About</SectionLabel>
 
       <ScrollWords
-        className="mt-10 max-w-[24ch] font-display text-[clamp(2.2rem,5.4vw,5.5rem)] leading-[1.02] tracking-[-0.045em] md:mt-14"
+        className="mt-6 max-w-[26ch] font-display text-[clamp(2rem,4vw,4rem)] leading-[1.05] tracking-[-0.04em] md:mt-8"
         text="CS student at Emory, most recently a data engineering intern on Expedia Group's Global Payments team. Graduating May 2027."
         accentWords={3}
       />
 
-      <div className="mt-20 grid gap-16 md:mt-28 md:grid-cols-12 md:gap-10">
+      <div className="mt-14 grid gap-14 md:mt-20 md:grid-cols-12 md:gap-10">
         <Reveal className="md:col-span-5">
           <div className="max-w-[44rem] space-y-5 text-lg leading-relaxed text-fg/70 md:sticky md:top-28 md:text-[clamp(1.05rem,1.15vw,1.35rem)]">
             <p className="text-xl leading-snug text-fg md:text-[clamp(1.5rem,2vw,2.4rem)] md:leading-[1.25]">
@@ -68,7 +68,7 @@ export default function About() {
           ].map((group) => (
             <div key={group.title}>
               <Reveal>
-                <h3 className="label mb-2">{group.title}</h3>
+                <h3 className="mb-1 text-sm font-medium text-dim">{group.title}</h3>
               </Reveal>
               <ul>
                 {group.items.map((item, i) => (

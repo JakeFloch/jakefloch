@@ -44,7 +44,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-svh flex-col justify-end overflow-hidden px-5 pb-8 pt-24 md:px-10 md:pb-10"
+      className="relative flex min-h-[85svh] flex-col justify-end overflow-hidden px-5 pb-8 pt-24 md:min-h-[78svh] md:px-10 md:pb-10"
     >
       <DotField className="absolute inset-0 h-full w-full" />
 
@@ -67,7 +67,7 @@ export default function Hero() {
         <div className="mt-6 flex flex-col gap-6 border-t border-line pt-6 md:mt-4 md:flex-row md:items-center md:justify-between">
           <motion.div
             {...fade(0.9)}
-            className="label flex flex-wrap items-center gap-x-8 gap-y-2"
+            className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-dim"
           >
             <span className="flex items-center gap-2 text-fg">
               <span className="relative flex h-2 w-2">

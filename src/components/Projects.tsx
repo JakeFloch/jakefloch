@@ -87,8 +87,7 @@ const PROJECTS: Project[] = [
 function Stack({ items }: { items: string[] }) {
   return (
     <div className="border-t border-line pt-4">
-      <p className="label">Stack</p>
-      <ul className="mt-2 flex flex-wrap gap-y-1 font-mono text-[11px] leading-relaxed text-fg/85">
+      <ul className="flex flex-wrap gap-y-1 font-mono text-[11px] leading-relaxed text-fg/85">
         {items.map((item, i) => (
           <li key={item} className="flex items-center whitespace-nowrap">
             {item}
@@ -107,16 +106,10 @@ function Stack({ items }: { items: string[] }) {
 // One pass of the project cards. The rail repeats these to loop; repeats are
 // clones, kept out of the tab order.
 function cards(clone: boolean) {
-  const total = String(PROJECTS.length).padStart(2, "0");
-  return PROJECTS.map((p, i) => (
+  return PROJECTS.map((p) => (
     <article key={p.title} className="card flex w-[22rem] shrink-0 flex-col">
-      <header className="label flex h-10 items-center justify-between border-b border-line px-5">
-        <span>
-          <span className="text-accent">{String(i + 1).padStart(2, "0")}</span>
-          <span className="mx-1.5">/</span>
-          {total}
-        </span>
-        <span>{p.kind}</span>
+      <header className="flex h-10 items-center border-b border-line px-5 text-xs text-dim">
+        {p.kind}
       </header>
       <p.Visual />
       <div className="flex flex-1 flex-col p-5">
@@ -156,23 +149,16 @@ function cards(clone: boolean) {
 
 export default function Projects() {
   return (
-    <section id="work" className="px-5 pb-6 pt-28 md:px-10 md:pb-10 md:pt-44">
-      <div className="flex items-end justify-between gap-6">
-        <div>
-          <SectionLabel n="02">Selected work</SectionLabel>
-          <Reveal>
-            <h2 className="mt-8 font-display text-[clamp(3.25rem,10vw,10rem)] leading-[0.9] tracking-[-0.05em]">
-              Things I&apos;ve <em className="text-accent">built</em>
-            </h2>
-          </Reveal>
-        </div>
-        <p className="label hidden pb-3 md:block">
-          ({String(PROJECTS.length).padStart(2, "0")})
-        </p>
-      </div>
+    <section id="work" className="px-5 pb-6 pt-20 md:px-10 md:pb-10 md:pt-28">
+      <SectionLabel>Selected work</SectionLabel>
+      <Reveal>
+        <h2 className="mt-6 font-display text-[clamp(2rem,4vw,4rem)] leading-[1.05] tracking-[-0.04em] md:mt-8">
+          Things I&apos;ve <em className="text-accent">built</em>
+        </h2>
+      </Reveal>
 
       {/* A slow, looping side-scroller that can be grabbed and thrown */}
-      <Reveal className="mt-14 md:mt-20">
+      <Reveal className="mt-10 md:mt-14">
         <ProjectRail sets={[cards(false), cards(true), cards(true)]} />
       </Reveal>
     </section>

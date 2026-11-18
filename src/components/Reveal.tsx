@@ -27,14 +27,8 @@ export function Reveal({
   );
 }
 
-export function SectionLabel({ n, children }: { n: string; children: ReactNode }) {
-  return (
-    <div className="label flex items-center gap-3">
-      <span className="text-accent">{n}</span>
-      <span className="h-px w-10 bg-line" aria-hidden />
-      <span>{children}</span>
-    </div>
-  );
+export function SectionLabel({ children }: { children: ReactNode }) {
+  return <p className="text-sm font-medium text-dim">{children}</p>;
 }
 
 // A paragraph whose words light up one by one as it scrolls through the

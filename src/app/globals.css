@@ -350,12 +350,6 @@ html.custom-cursor *::after {
   transform: translateX(12px);
 }
 
-/* Outlined footer wordmark */
-.wordmark {
-  color: transparent;
-  -webkit-text-stroke: 1px rgb(255 255 255 / 0.16);
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -3,15 +3,15 @@ import { SOCIALS } from "./SocialIcons";
 
 export default function Contact() {
   return (
-    <section id="contact" className="px-5 py-28 md:px-10 md:py-44">
-      <SectionLabel n="03">Contact</SectionLabel>
+    <section id="contact" className="px-5 py-20 md:px-10 md:py-28">
+      <SectionLabel>Contact</SectionLabel>
       <Reveal>
-        <h2 className="mt-8 font-display text-[clamp(3.75rem,13vw,13rem)] leading-[0.86] tracking-[-0.055em]">
+        <h2 className="mt-6 font-display text-[clamp(2rem,4vw,4rem)] leading-[1.05] tracking-[-0.04em] md:mt-8">
           Let&apos;s <em className="text-accent">talk.</em>
         </h2>
       </Reveal>
 
-      <div className="mt-16 grid gap-16 md:mt-24 md:grid-cols-12 md:gap-10">
+      <div className="mt-12 grid gap-14 md:mt-16 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-5">
           <Reveal>
             <p className="max-w-md text-lg leading-relaxed text-fg/75">
@@ -33,7 +33,7 @@ export default function Contact() {
                       <s.Icon className="h-5 w-5 shrink-0" />
                       {s.label}
                     </span>
-                    <span className="label flex items-center gap-2">
+                    <span className="flex items-center gap-2 text-sm text-dim">
                       {s.handle}
                       <span
                         aria-hidden
@@ -57,7 +57,7 @@ export default function Contact() {
           >
             <div className="grid gap-8 sm:grid-cols-2">
               <label className="block">
-                <span className="label">Name</span>
+                <span className="text-sm text-dim">Name</span>
                 <input
                   type="text"
                   name="name"
@@ -68,7 +68,7 @@ export default function Contact() {
                 />
               </label>
               <label className="block">
-                <span className="label">Email</span>
+                <span className="text-sm text-dim">Email</span>
                 <input
                   type="email"
                   name="email"
@@ -80,7 +80,7 @@ export default function Contact() {
               </label>
             </div>
             <label className="block">
-              <span className="label">Message</span>
+              <span className="text-sm text-dim">Message</span>
               <textarea
                 name="message"
                 required

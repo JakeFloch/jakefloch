@@ -57,8 +57,8 @@ export default function Home() {
         <Projects />
         <Contact />
       </main>
-      <footer className="overflow-hidden border-t border-line px-5 pt-8 md:px-10">
-        <div className="label flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <footer className="border-t border-line px-5 py-8 md:px-10">
+        <div className="flex flex-col gap-3 text-sm text-dim sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 Jake Floch</p>
           <div className="flex items-center gap-6">
             {SOCIALS.map((s) => (
@@ -78,12 +78,6 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <p
-          aria-hidden
-          className="wordmark -mb-[0.2em] mt-10 select-none whitespace-nowrap text-center font-display text-[17vw] leading-[0.8] tracking-[-0.05em]"
-        >
-          Jake Floch
-        </p>
       </footer>
     </>
   );
