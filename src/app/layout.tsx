@@ -1,25 +1,43 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import {
+  Funnel_Display,
+  Funnel_Sans,
+  Martian_Mono,
+  VT323,
+} from "next/font/google";
 import "./globals.css";
-import GlobalGridCursorOverlay from "../components/GlobalGridCursorOverlay";
-import CustomCursor from "../components/CustomCursor";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import CursorFollower from "../components/CursorFollower";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const funnelSans = Funnel_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const martianMono = Martian_Mono({
+  variable: "--font-code",
   subsets: ["latin"],
 });
+
+const funnelDisplay = Funnel_Display({
+  variable: "--font-heading",
+  subsets: ["latin"],
+});
+
+// Pixel face used only inside the Invitide and Raging Gambler visuals.
+const pixel = VT323({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const description =
+  "Portfolio of Jake Floch — Computer Science student at Emory University. Data pipelines, AI tooling, and full-stack projects.";
 
 export const metadata: Metadata = {
-  title: "Jake Floch - Software Engineer",
-  description:
-    "Portfolio of Jake Floch — Computer Science student at Emory and Data Engineer Intern at Expedia Group. Data pipelines, backend, and full-stack projects.",
+  title: "Jake Floch — Software Engineer",
+  description,
   keywords: [
     "Jake Floch",
     "Software Engineer",
@@ -34,21 +52,24 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
   authors: [{ name: "Jake Floch" }],
-  viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
   openGraph: {
-    title: "Jake Floch - Software Engineer",
-    description:
-      "Portfolio of Jake Floch — Computer Science student at Emory and Data Engineer Intern at Expedia Group. Data pipelines, backend, and full-stack projects.",
+    title: "Jake Floch — Software Engineer",
+    description,
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jake Floch - Software Engineer",
-    description:
-      "Portfolio of Jake Floch — Computer Science student at Emory and Data Engineer Intern at Expedia Group. Data pipelines, backend, and full-stack projects.",
+    title: "Jake Floch — Software Engineer",
+    description,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#09090b",
 };
 
 export default function RootLayout({
@@ -57,20 +78,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased cursor-none bg-[#0f0f11] text-zinc-100 relative`}
-      >
-        <GlobalGridCursorOverlay
-          cellSize={20} // Grid Cell size in px
-          fadeOutSeconds={0.9} // Fade duration
-          intensity={0.9} // Lit cell peak opacity
-        />
-        {/* Custom pointer (hidden unless over interactive elements) */}
-        <CustomCursor />
-        <div className="relative z-20">{children}</div>
-        <Analytics /> {/* Vercel Web Analytics */}
-        <SpeedInsights /> {/* Vercel Speed Insights */}
+    <html
+      lang="en"
+      className={`${funnelSans.variable} ${martianMono.variable} ${funnelDisplay.variable} ${pixel.variable}`}
+    >
+      <body className="antialiased">
+        {children}
+        <CursorFollower />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
